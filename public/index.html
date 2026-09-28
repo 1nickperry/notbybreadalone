@@ -19,14 +19,19 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&family=Urbanist:wght@400;500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/styles-v3.css?v=10" />
+  <link rel="stylesheet" href="css/styles-v3.css?v=11" />
 </head>
 <body>
   <header class="site-header">
     <nav class="nav-left" aria-label="Primary">
       <a href="#about">About</a>
       <a href="#contact">Contact</a>
-      <a class="nav-donate" id="navDonate" href="https://paypal.me/perrynick" target="_blank" rel="noopener noreferrer">Donate</a>
+    </nav>
+    <a href="/" class="logo" aria-label="daily verse home">
+      <span>daily</span>
+      <span>verse</span>
+    </a>
+    <nav class="nav-right" aria-label="Account">
       <div class="account-wrap">
         <button type="button" class="account-btn" aria-expanded="false" aria-haspopup="true" id="accountBtn">
           Account
@@ -39,11 +44,6 @@
         </div>
       </div>
     </nav>
-    <a href="/" class="logo" aria-label="daily verse home">
-      <span>daily</span>
-      <span>verse</span>
-    </a>
-    <div class="nav-spacer" aria-hidden="true"></div>
   </header>
 
   <main>
@@ -214,6 +214,6 @@
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>
-  <script src="js/main-v3.js?v=10" defer></script>
+  <script src="js/main-v3.js?v=11" defer></script>
 </body>
 </html>

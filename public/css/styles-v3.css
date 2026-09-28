@@ -68,6 +68,23 @@ a:hover {
   opacity: 0.75;
 }
 
+.nav-right {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 1.5rem;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+.nav-right a {
+  text-decoration: none;
+}
+
+.nav-right a:hover {
+  opacity: 0.75;
+}
+
 .account-wrap {
   position: relative;
 }
@@ -91,7 +108,8 @@ a:hover {
 .account-menu {
   position: absolute;
   top: calc(100% + 0.4rem);
-  left: 0;
+  right: 0;
+  left: auto;
   min-width: 9rem;
   background: #fff;
   border: 1px solid #111;
@@ -643,7 +661,7 @@ a:hover {
   margin-top: 2rem;
 }
 
-/* Floating donate control — bottom-right only */
+/* Floating donate control - bottom-right only */
 .donate-fab {
   position: fixed;
   right: 1.25rem;
@@ -665,23 +683,24 @@ a:hover {
   font: inherit;
   font-size: 0.95rem;
   font-weight: 600;
-  color: var(--ink);
+  color: var(--lime);
   background: #fff;
-  border: 1.5px solid rgba(29, 74, 97, 0.25);
+  border: 1.5px solid var(--lime);
   border-radius: 999px;
-  box-shadow: 0 8px 24px rgba(29, 74, 97, 0.14);
+  box-shadow: 0 8px 24px rgba(166, 236, 65, 0.28);
   cursor: pointer;
   transition: filter 0.15s ease, box-shadow 0.15s ease;
 }
 
 .donate-fab-toggle:hover {
   filter: brightness(0.98);
-  box-shadow: 0 10px 28px rgba(29, 74, 97, 0.18);
+  box-shadow: 0 10px 28px rgba(166, 236, 65, 0.36);
 }
 
 .donate-fab-toggle[aria-expanded="true"] {
-  background: var(--lime);
-  border-color: transparent;
+  background: #fff;
+  color: var(--lime);
+  border-color: var(--lime);
 }
 
 .donate-fab-menu {
@@ -747,9 +766,11 @@ a:hover {
 
 @media (max-width: 900px) {
   .site-header {
-    grid-template-columns: 1fr;
-    justify-items: center;
-    gap: 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 0.75rem 1.5rem;
     padding: 1.25rem 1.25rem 0.25rem;
   }
 
@@ -759,8 +780,14 @@ a:hover {
     flex-wrap: wrap;
   }
 
+  .nav-right {
+    order: 2;
+    justify-content: center;
+  }
+
   .logo {
     order: 1;
+    width: 100%;
   }
 
   .nav-spacer {
@@ -933,17 +960,7 @@ a:hover {
 /* fulfillment fully removed from UI */
 .selector-fulfillment, [data-fulfillment], #theme, #fulfillment { display: none !important; }
 
-/* Nav Donate link */
-.nav-donate {
-  color: #007AFF !important;
-  font-weight: 600 !important;
-  text-decoration: none !important;
-}
-.nav-donate:hover {
-  text-decoration: underline !important;
-}
-
-/* Donate FAB: extreme bottom-right iMessage blue, never covered */
+/* Donate FAB: bottom-right, white fill + key-lime outline/text (match Sign Up --lime) */
 #donateFab.donate-fab,
 .donate-fab {
   position: fixed !important;
@@ -963,10 +980,10 @@ a:hover {
 }
 #donateFab .donate-fab-toggle,
 .donate-fab-toggle {
-  background: rgba(0, 122, 255, 0.16) !important;
-  color: #007AFF !important;
-  border: 1.5px solid rgba(0, 122, 255, 0.45) !important;
-  box-shadow: 0 8px 24px rgba(0, 122, 255, 0.22) !important;
+  background: #fff !important;
+  color: var(--lime) !important;
+  border: 1.5px solid var(--lime) !important;
+  box-shadow: 0 8px 24px rgba(166, 236, 65, 0.28) !important;
   font-weight: 600 !important;
   border-radius: 999px !important;
 }
@@ -974,17 +991,23 @@ a:hover {
 #donateFab .donate-fab-toggle[aria-expanded="true"],
 .donate-fab-toggle:hover,
 .donate-fab-toggle[aria-expanded="true"] {
-  background: rgba(0, 122, 255, 0.25) !important;
-  color: #007AFF !important;
+  background: #fff !important;
+  color: var(--lime) !important;
+  border-color: var(--lime) !important;
+  box-shadow: 0 10px 28px rgba(166, 236, 65, 0.36) !important;
 }
 #donateFab .donate-fab-menu,
 .donate-fab-menu {
   background: #fff !important;
-  border: 1px solid rgba(0, 122, 255, 0.25) !important;
+  border: 1px solid var(--lime) !important;
 }
 #donateFab .donate-link,
 .donate-link {
-  color: #007AFF !important;
+  color: var(--ink) !important;
+}
+#donateFab .donate-link:hover,
+.donate-link:hover {
+  background: rgba(166, 236, 65, 0.18) !important;
 }
 @media (max-width: 900px) {
   #donateFab.donate-fab,
