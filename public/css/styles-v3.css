@@ -518,7 +518,7 @@ a:hover {
   display: flex;
   flex-direction: column;
   gap: 0.32rem;
-  padding: 0.35rem 0.7rem 0.4rem 0.72rem;
+  padding: 0.35rem 0.55rem 0.4rem 0.95rem;
   overflow: visible;
   min-height: 0;
 }
@@ -916,7 +916,7 @@ a:hover {
 
   .imessage-thread {
     gap: 0.38rem;
-    padding: 0.38rem 0.7rem 0.28rem 0.95rem;
+    padding: 0.38rem 0.55rem 0.28rem 1.2rem;
   }
 
   .imessage-verse-pair {
@@ -946,17 +946,17 @@ a:hover {
   }
 
   .imessage-bubble.incoming::before {
-    left: -0.55rem;
-    width: 1.25rem;
-    height: 1.25rem;
-    border-bottom-right-radius: 1rem;
+    left: -0.6rem;
+    width: 1.35rem;
+    height: 1.35rem;
+    border-bottom-right-radius: 1.05rem;
   }
 
   .imessage-bubble.incoming::after {
-    left: -0.75rem;
-    width: 0.75rem;
-    height: 1.25rem;
-    border-bottom-right-radius: 0.85rem;
+    left: -0.82rem;
+    width: 0.82rem;
+    height: 1.35rem;
+    border-bottom-right-radius: 0.9rem;
   }
 
   .ios-keyboard {
