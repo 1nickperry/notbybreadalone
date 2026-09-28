@@ -1099,6 +1099,50 @@ a:hover {
   }
 }
 
+/* Keep the tilted phone from crowding the signup copy on laptop widths.
+   The base desktop treatment stays roomy for larger screens. */
+@media (min-width: 901px) and (max-width: 1280px) {
+  .hero {
+    grid-template-columns: minmax(0, 1fr) minmax(260px, 340px);
+    gap: 1.25rem;
+    padding-right: 2.75rem;
+  }
+
+  .hero-phone {
+    margin-right: 0;
+    padding: 2rem 0 2.5rem;
+    transform: none;
+  }
+
+  .hero-phone-stage {
+    width: min(100%, 360px);
+    min-height: 31rem;
+    padding-bottom: 1.25rem;
+  }
+
+  .hero-phone-float {
+    width: min(100%, 250px);
+  }
+}
+
+/* A small step down keeps the 1366px laptop composition balanced too. */
+@media (min-width: 1281px) and (max-width: 1400px) {
+  .hero-phone {
+    margin-right: 0;
+    padding-right: 1rem;
+    transform: none;
+  }
+
+  .hero-phone-stage {
+    width: min(100%, 420px);
+    min-height: 34rem;
+  }
+
+  .hero-phone-float {
+    width: min(100%, 280px);
+  }
+}
+
 @media (max-width: 900px) {
   .site-header {
     display: flex;
