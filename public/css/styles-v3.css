@@ -33,6 +33,138 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+/* Subtle depth background (noise + blobs + lime accents) — behind content */
+.depth-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.depth-noise {
+  position: absolute;
+  inset: 0;
+  background-image: url("../assets/noise-texture.webp");
+  background-repeat: repeat;
+  background-size: 420px 420px;
+  opacity: 0.09; /* ~9% — soft grain; multiply keeps white clean */
+  mix-blend-mode: multiply;
+}
+
+.depth-blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(64px);
+  will-change: transform;
+}
+
+.depth-blob--hero {
+  /* hero left */
+  width: min(52vw, 560px);
+  height: min(52vw, 560px);
+  left: -8%;
+  top: 12%;
+  background: radial-gradient(circle at 40% 40%, rgba(29, 74, 97, 0.10) 0%, rgba(29, 74, 97, 0.04) 55%, transparent 72%);
+  opacity: 0.85; /* effective ~8–10% navy tint */
+}
+
+.depth-blob--about {
+  /* About right */
+  width: min(48vw, 520px);
+  height: min(48vw, 520px);
+  right: -6%;
+  top: 58%;
+  background: radial-gradient(circle at 55% 45%, rgba(29, 74, 97, 0.09) 0%, rgba(29, 74, 97, 0.035) 55%, transparent 72%);
+  opacity: 0.9;
+}
+
+.depth-arc {
+  position: absolute;
+  width: clamp(88px, 11vw, 140px);
+  height: clamp(88px, 11vw, 140px);
+  right: clamp(6%, 14vw, 22%);
+  top: clamp(7rem, 18vh, 11rem);
+  color: var(--lime);
+  opacity: 0.55;
+  will-change: transform;
+}
+
+.depth-dot {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--lime);
+  opacity: 0.7;
+  will-change: transform;
+}
+
+.depth-dot--1 {
+  right: clamp(18%, 26vw, 34%);
+  top: clamp(5.5rem, 14vh, 9rem);
+}
+
+.depth-dot--2 {
+  width: 4px;
+  height: 4px;
+  right: clamp(10%, 18vw, 26%);
+  top: clamp(14rem, 32vh, 22rem);
+  opacity: 0.55;
+}
+
+.site-header,
+main,
+.site-footer {
+  position: relative;
+  z-index: 1;
+}
+
+@media (max-width: 900px) {
+  .depth-blob--hero {
+    width: 70vw;
+    height: 70vw;
+    left: -18%;
+    top: 6%;
+  }
+  .depth-blob--about {
+    width: 65vw;
+    height: 65vw;
+    right: -22%;
+    top: 62%;
+  }
+  .depth-arc {
+    right: 4%;
+    top: auto;
+    bottom: 38%;
+    opacity: 0.4;
+  }
+  .depth-dot--1 {
+    right: 12%;
+    top: auto;
+    bottom: 52%;
+  }
+  .depth-dot--2 {
+    right: 8%;
+    top: auto;
+    bottom: 34%;
+  }
+  .depth-noise {
+    opacity: 0.07;
+    background-size: 320px 320px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .depth-blob,
+  .depth-arc,
+  .depth-dot {
+    will-change: auto;
+  }
+}
+
+
+
 a {
   color: var(--ink);
   text-decoration: none;
@@ -639,7 +771,7 @@ a:hover {
   justify-content: center;
   flex: 1 1 0;
   min-width: 0;
-  height: 0.95rem;
+  height: 1.35rem;
   border-radius: 0.28rem;
   background: #fff;
   color: #111;

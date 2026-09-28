@@ -19,9 +19,21 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&family=Urbanist:wght@400;500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/styles-v3.css?v=20260928-1413" />
+  <link rel="stylesheet" href="css/styles-v3.css?v=20260928-1438" />
 </head>
 <body>
+
+  <!-- Subtle depth: Nick noise + soft navy blobs + lime accents (behind content) -->
+  <div class="depth-bg" aria-hidden="true">
+    <div class="depth-noise"></div>
+    <div class="depth-blob depth-blob--hero" id="depthBlobHero"></div>
+    <div class="depth-blob depth-blob--about" id="depthBlobAbout"></div>
+    <svg class="depth-arc" id="depthArc" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M18 92C34 48 78 22 108 38" stroke="currentColor" stroke-width="1.25" stroke-linecap="round"/>
+    </svg>
+    <span class="depth-dot depth-dot--1" id="depthDot1"></span>
+    <span class="depth-dot depth-dot--2" id="depthDot2"></span>
+  </div>
   <header class="site-header">
     <nav class="nav-left" aria-label="Primary">
       <a href="#about">About</a>
@@ -236,6 +248,6 @@
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>
-  <script src="js/main-v3.js?v=20260928-1413" defer></script>
+  <script src="js/main-v3.js?v=20260928-1438" defer></script>
 </body>
 </html>

@@ -51,6 +51,44 @@
     }
   })();
 
+  // Optional slow depth drift (blobs / dots / arc) — few px, behind content.
+  (function initDepthDrift() {
+    if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      return;
+    }
+    var items = [
+      { id: "depthBlobHero", x: 10, y: 14, dur: 7.5 },
+      { id: "depthBlobAbout", x: -12, y: 10, dur: 8.5 },
+      { id: "depthArc", x: 6, y: -8, dur: 6.8 },
+      { id: "depthDot1", x: 5, y: -6, dur: 5.6 },
+      { id: "depthDot2", x: -4, y: 7, dur: 6.2 },
+    ];
+    function start() {
+      if (!window.gsap) return false;
+      items.forEach(function (item, i) {
+        var el = document.getElementById(item.id);
+        if (!el) return;
+        gsap.to(el, {
+          x: item.x,
+          y: item.y,
+          duration: item.dur,
+          ease: "sine.inOut",
+          yoyo: true,
+          repeat: -1,
+          delay: i * 0.35,
+        });
+      });
+      return true;
+    }
+    if (!start()) {
+      var tries = 0;
+      var timer = setInterval(function () {
+        tries += 1;
+        if (start() || tries > 40) clearInterval(timer);
+      }, 50);
+    }
+  })();
+
 
   var accountBtn = document.getElementById("accountBtn");
   var accountMenu = document.getElementById("accountMenu");
