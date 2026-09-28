@@ -19,7 +19,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&family=Urbanist:wght@400;500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/styles-v3.css?v=12" />
+  <link rel="stylesheet" href="css/styles-v3.css?v=15" />
 </head>
 <body>
   <header class="site-header">
@@ -117,7 +117,7 @@
         <div class="hero-phone-stage">
           <div class="hero-phone-shadow" id="heroPhoneShadow" aria-hidden="true"></div>
           <div class="hero-phone-float" id="heroPhoneFloat">
-            <div class="iphone-frame" role="img" aria-label="iPhone showing a daily verse text message about Faith">
+            <div class="iphone-frame" role="img" aria-label="iPhone showing daily verse text messages about Faith and Courage">
               <div class="iphone-side iphone-side-left" aria-hidden="true"></div>
               <div class="iphone-side iphone-side-right" aria-hidden="true"></div>
               <div class="iphone-bezel">
@@ -131,10 +131,40 @@
                     </span>
                   </div>
                   <div class="imessage">
-                    <div class="imessage-chip outgoing">Faith · KJV</div>
-                    <div class="imessage-bubble incoming">
-                      <p>"If ye have faith as a grain of mustard seed, ye shall say unto this mountain, Remove hence to yonder place; and it shall remove; and nothing shall be impossible unto you."</p>
-                      <span class="imessage-ref">Matthew 17:20 · KJV</span>
+                    <div class="imessage-thread">
+                      <div class="imessage-chip outgoing">Faith · KJV</div>
+                      <div class="imessage-bubble incoming">
+                        <span class="imessage-tail" aria-hidden="true"><span class="imessage-tail-fill"></span><span class="imessage-tail-cut"></span></span>
+                        <p>"If ye have faith as a grain of mustard seed, ye shall say unto this mountain, Remove hence to yonder place; and it shall remove; and nothing shall be impossible unto you."</p>
+                        <span class="imessage-ref">Matthew 17:20 · KJV</span>
+                      </div>
+                      <div class="imessage-verse-pair imessage-verse-pair--second">
+                        <div class="imessage-chip outgoing">Courage</div>
+                        <div class="imessage-bubble incoming">
+                        <span class="imessage-tail" aria-hidden="true"><span class="imessage-tail-fill"></span><span class="imessage-tail-cut"></span></span>
+                        <p>"Have not I commanded thee? Be strong and of a good courage; be not afraid, neither be thou dismayed: for the LORD thy God is with thee whithersoever thou goest."</p>
+                          <span class="imessage-ref">Joshua 1:9 · KJV</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="ios-keyboard" aria-hidden="true">
+                      <div class="ios-keyboard-row">
+                        <span>Q</span><span>W</span><span>E</span><span>R</span><span>T</span><span>Y</span><span>U</span><span>I</span><span>O</span><span>P</span>
+                      </div>
+                      <div class="ios-keyboard-row ios-keyboard-row--mid">
+                        <span>A</span><span>S</span><span>D</span><span>F</span><span>G</span><span>H</span><span>J</span><span>K</span><span>L</span>
+                      </div>
+                      <div class="ios-keyboard-row">
+                        <span class="ios-key--wide ios-key--mod">⇧</span>
+                        <span>Z</span><span>X</span><span>C</span><span>V</span><span>B</span><span>N</span><span>M</span>
+                        <span class="ios-key--wide ios-key--mod">⌫</span>
+                      </div>
+                      <div class="ios-keyboard-row ios-keyboard-row--bottom">
+                        <span class="ios-key--mod ios-key--util">123</span>
+                        <span class="ios-key--space">space</span>
+                        <span class="ios-key--mod ios-key--util">return</span>
+                      </div>
+                      <div class="ios-keyboard-home"></div>
                     </div>
                   </div>
                 </div>
@@ -208,6 +238,6 @@
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>
-  <script src="js/main-v3.js?v=12" defer></script>
+  <script src="js/main-v3.js?v=15" defer></script>
 </body>
 </html>
