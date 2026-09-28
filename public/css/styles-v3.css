@@ -509,7 +509,7 @@ a:hover {
   display: flex;
   flex-direction: column;
   min-height: 0;
-  overflow: hidden;
+  overflow: visible;
   padding: 0;
 }
 
@@ -586,39 +586,29 @@ a:hover {
   z-index: 1;
 }
 
-/* Wispy iMessage tail (incoming, bottom-left) — classic dual-mask CSS */
-.imessage-bubble.incoming::before,
-.imessage-bubble.incoming::after {
-  content: none;
-  display: none;
-}
-
-.imessage-tail {
+/* Wispy iMessage tail (incoming, bottom-left) — dual pseudo-elements */
+.imessage-bubble.incoming::before {
+  content: "";
   position: absolute;
+  z-index: 0;
   left: -0.45rem;
   bottom: 0;
-  width: 0.85rem;
-  height: 0.95rem;
-  pointer-events: none;
-  z-index: 0;
-  overflow: visible;
-}
-
-.imessage-tail-fill {
-  position: absolute;
-  inset: 0;
+  width: 1.05rem;
+  height: 1.05rem;
   background: var(--bubble-in);
-  border-bottom-right-radius: 0.7rem;
+  border-bottom-right-radius: 0.85rem;
 }
 
-.imessage-tail-cut {
+.imessage-bubble.incoming::after {
+  content: "";
   position: absolute;
-  left: -0.38rem;
+  z-index: 1;
+  left: -0.62rem;
   bottom: 0;
-  width: 0.5rem;
-  height: 100%;
+  width: 0.62rem;
+  height: 1.05rem;
   background: #f2f2f7;
-  border-bottom-right-radius: 0.55rem;
+  border-bottom-right-radius: 0.7rem;
 }
 
 /* Desktop-only iOS keyboard graphic */
@@ -926,7 +916,7 @@ a:hover {
 
   .imessage-thread {
     gap: 0.38rem;
-    padding: 0.38rem 0.7rem 0.28rem 0.78rem;
+    padding: 0.38rem 0.7rem 0.28rem 0.95rem;
   }
 
   .imessage-verse-pair {
@@ -955,21 +945,18 @@ a:hover {
     font-size: 0.72rem;
   }
 
-  .imessage-tail {
-    left: -0.62rem;
-    bottom: 0;
-    width: 1.2rem;
-    height: 1.3rem;
+  .imessage-bubble.incoming::before {
+    left: -0.55rem;
+    width: 1.25rem;
+    height: 1.25rem;
+    border-bottom-right-radius: 1rem;
   }
 
-  .imessage-tail-fill {
-    border-bottom-right-radius: 0.95rem;
-  }
-
-  .imessage-tail-cut {
-    left: -0.5rem;
-    width: 0.65rem;
-    border-bottom-right-radius: 0.72rem;
+  .imessage-bubble.incoming::after {
+    left: -0.75rem;
+    width: 0.75rem;
+    height: 1.25rem;
+    border-bottom-right-radius: 0.85rem;
   }
 
   .ios-keyboard {
