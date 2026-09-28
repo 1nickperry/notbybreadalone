@@ -80,7 +80,13 @@ body {
   opacity: 1; /* 1.5x target, capped at CSS maximum */
 }
 
-.site-header,
+/* Keep navigation above every hero layer, including transformed mockups. */
+.site-header {
+  position: relative;
+  z-index: 100;
+  isolation: isolate;
+}
+
 main,
 .site-footer {
   position: relative;
@@ -169,6 +175,7 @@ a:hover {
 
 .account-wrap {
   position: relative;
+  z-index: 101;
 }
 
 .account-btn {
@@ -197,7 +204,7 @@ a:hover {
   border: 1px solid #111;
   border-radius: 4px;
   padding: 0.35rem 0;
-  z-index: 20;
+  z-index: 102;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
 }
 
@@ -438,6 +445,10 @@ a:hover {
   padding: 1.5rem 0 2.5rem;
   min-height: 30rem;
   margin-right: -0.25rem;
+  /* This transform creates a stacking context; keep the whole phone at 1. */
+  position: relative;
+  z-index: 1;
+  isolation: isolate;
   transform: translateX(6%);
 }
 
