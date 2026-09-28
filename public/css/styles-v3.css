@@ -33,7 +33,7 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* Subtle depth background (noise + blobs + lime accents) — behind content */
+/* Subtle depth background (noise + navy blobs) — behind content */
 .depth-bg {
   position: fixed;
   inset: 0;
@@ -45,7 +45,7 @@ body {
 .depth-noise {
   position: absolute;
   inset: 0;
-  background-image: url("../assets/noise-texture.webp?v=20260928-1440");
+  background-image: url("../assets/noise-texture.webp?v=20260928-1445");
   background-repeat: repeat;
   background-size: 420px 420px;
   opacity: 0.135; /* 1.5x — stronger grain; multiply keeps white clean */
@@ -79,41 +79,11 @@ body {
   opacity: 1; /* 1.5x target, capped at CSS maximum */
 }
 
-.depth-arc {
-  position: absolute;
-  width: clamp(88px, 11vw, 140px);
-  height: clamp(88px, 11vw, 140px);
-  right: clamp(6%, 14vw, 22%);
-  top: clamp(7rem, 18vh, 11rem);
-  color: var(--lime);
-  opacity: 0.825;
-  will-change: transform;
+.site-header {
+  position: relative;
+  z-index: 10;
 }
 
-.depth-dot {
-  position: absolute;
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--lime);
-  opacity: 1; /* 1.5x target, capped at CSS maximum */
-  will-change: transform;
-}
-
-.depth-dot--1 {
-  right: clamp(18%, 26vw, 34%);
-  top: clamp(5.5rem, 14vh, 9rem);
-}
-
-.depth-dot--2 {
-  width: 4px;
-  height: 4px;
-  right: clamp(10%, 18vw, 26%);
-  top: clamp(14rem, 32vh, 22rem);
-  opacity: 0.825;
-}
-
-.site-header,
 main,
 .site-footer {
   position: relative;
@@ -133,22 +103,6 @@ main,
     right: -22%;
     top: 62%;
   }
-  .depth-arc {
-    right: 4%;
-    top: auto;
-    bottom: 38%;
-    opacity: 0.6;
-  }
-  .depth-dot--1 {
-    right: 12%;
-    top: auto;
-    bottom: 52%;
-  }
-  .depth-dot--2 {
-    right: 8%;
-    top: auto;
-    bottom: 34%;
-  }
   .depth-noise {
     opacity: 0.105;
     background-size: 320px 320px;
@@ -157,8 +111,7 @@ main,
 
 @media (prefers-reduced-motion: reduce) {
   .depth-blob,
-  .depth-arc,
-  .depth-dot {
+  .depth-noise {
     will-change: auto;
   }
 }
@@ -610,6 +563,8 @@ a:hover {
 
 .imessage-time {
   justify-self: start;
+  font-size: 0.68rem;
+  line-height: 1;
   padding-left: 0.15rem;
   letter-spacing: -0.01em;
   white-space: nowrap;
@@ -1345,6 +1300,10 @@ a:hover {
     padding: 0.42rem 0.45rem 0.12rem;
     font-size: 0.44rem;
     grid-template-columns: 1fr 2fr 1fr;
+  }
+
+  .imessage-time {
+    font-size: 0.52rem;
   }
 }
 
