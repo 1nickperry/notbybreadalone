@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>daily verse</title>
+  <meta name="description" content="Start your day or christen your night with a verse that speaks to your heart." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://notbybreadalone.app/" />
+  <meta property="og:title" content="daily verse" />
+  <meta property="og:description" content="Free daily Bible verse texts. Start your day with scripture." />
+  <meta property="og:image" content="https://notbybreadalone.app/assets/og-share.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="daily verse" />
+  <meta name="twitter:description" content="Free daily Bible verse texts. Start your day with scripture." />
+  <meta name="twitter:image" content="https://notbybreadalone.app/assets/og-share.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&family=Urbanist:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles-v2.css?v=3" />
+</head>
+<body>
+  <header class="site-header">
+    <nav class="nav-left" aria-label="Primary">
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
+      <div class="account-wrap">
+        <button type="button" class="account-btn" aria-expanded="false" aria-haspopup="true" id="accountBtn">
+          Account
+          <svg class="chevron" width="12" height="8" viewBox="0 0 12 8" aria-hidden="true"><path d="M1 1.5L6 6.5L11 1.5" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>
+        </button>
+        <div class="account-menu" id="accountMenu" hidden>
+          <a href="#signup">Sign Up</a>
+          <a href="#contact">Support</a>
+          <a href="/unsubscribe.html">Unsubscribe</a>
+        </div>
+      </div>
+    </nav>
+    <a href="/" class="logo" aria-label="daily verse home">
+      <span>daily</span>
+      <span>verse</span>
+    </a>
+    <div class="nav-spacer" aria-hidden="true"></div>
+  </header>
+
+  <main>
+    <section class="hero" id="signup">
+      <div class="hero-copy">
+        <h1 class="headline">Have you had a chance to meet Jesus?</h1>
+
+        <div class="selectors" role="group" aria-label="Verse preferences">
+          <label class="selector">
+            <span class="selector-label">
+              <svg class="icon" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6">
+                <path d="M4 5.5C4 4.67 4.67 4 5.5 4H11v16H5.5C4.67 20 4 19.33 4 18.5V5.5z"/>
+                <path d="M20 5.5C20 4.67 19.33 4 18.5 4H13v16h5.5c.83 0 1.5-.67 1.5-1.5V5.5z"/>
+              </svg>
+              Bible Version
+            </span>
+            <select id="version" name="version">
+              <option value="KJV" selected>KJV</option>
+              <option value="NIV" disabled>NIV (coming soon)</option>
+              <option value="ESV" disabled>ESV (coming soon)</option>
+              <option value="NLT" disabled>NLT (coming soon)</option>
+              <option value="NKJV" disabled>NKJV (coming soon)</option>
+            </select>
+          </label>
+
+          <label class="selector">
+            <span class="selector-label">
+              <svg class="icon" width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6">
+                <circle cx="12" cy="12" r="9"/>
+                <path d="M12 7v5l3.5 2" stroke-linecap="round"/>
+              </svg>
+              Send time (MST)
+            </span>
+            <select id="time" name="time">
+              <option value="6:00 AM">6:00 AM</option>
+              <option value="7:00 AM">7:00 AM</option>
+              <option value="8:00 AM">8:00 AM</option>
+              <option value="12:00 PM" selected>12:00 PM</option>
+              <option value="6:00 PM">6:00 PM</option>
+              <option value="9:00 PM">9:00 PM</option>
+            </select>
+          </label>
+        </div>
+
+        <p class="subtext">Start your day or christen your night with a verse that speaks to your heart.</p>
+
+        <form class="signup-form" id="signupForm" novalidate>
+          <div class="phone-row">
+            <div class="country" aria-label="Country code">
+              <span>US (+1)</span>
+              <svg class="chevron" width="12" height="8" viewBox="0 0 12 8" aria-hidden="true"><path d="M1 1.5L6 6.5L11 1.5" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>
+            </div>
+            <input
+              type="tel"
+              id="phone"
+              name="phone"
+              inputmode="tel"
+              autocomplete="tel-national"
+              placeholder="123-456-789"
+              maxlength="14"
+              required
+              aria-describedby="formMessage"
+            />
+            <button type="submit" class="signup-btn">Sign Up</button>
+          </div>
+          <p class="form-message" id="formMessage" role="status" aria-live="polite"></p>
+        </form>
+      </div>
+
+      <div class="hero-phone">
+        <img
+          src="assets/phone-hero-v3.png?v=1"
+          alt="iPhone showing daily verse text messages about Faith and Courage"
+          width="359"
+          height="517"
+          decoding="async"
+        />
+      </div>
+    </section>
+
+    <section class="about" id="about">
+      <div class="section-inner about-layout">
+        <div class="about-copy">
+          <h2>About</h2>
+          <p>
+            Imagine every believer, in every place, pausing on the same scripture each day.
+            One verse. One shared meditation. Hearts turned toward the same promise from God.
+          </p>
+          <p>
+            What would that do for the earth? More peace in homes. More courage in hard places.
+            More love walking ordinary streets. When the Body of Christ listens together,
+            the world feels the difference.
+          </p>
+          <p>
+            daily verse is a simple invitation into that unity: one text, one scripture,
+            arriving when you choose. No app to install. Just your number and a moment
+            that joins you to millions who long for the same Word.
+          </p>
+        </div>
+        <figure class="about-figure">
+          <img
+            src="assets/about-vision.jpg"
+            alt="Friends standing together on a hilltop at sunrise, a picture of shared hope and renewal"
+            width="640"
+            height="400"
+            decoding="async"
+          />
+        </figure>
+      </div>
+    </section>
+
+    <section class="contact" id="contact">
+      <div class="section-inner">
+        <h2>Contact</h2>
+        <p>
+          Questions, prayer, or help with your subscription? Reach out and we will get back to you.
+        </p>
+        <p>
+          Email: <a href="mailto:hi@notbybreadalone.app">hi@notbybreadalone.app</a>
+        </p>
+        <p class="muted">
+          To stop texts, visit <a href="/unsubscribe.html">/unsubscribe.html</a> or reply STOP if your carrier supports it.
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>&copy; <span id="year"></span> daily verse. All rights reserved.</p>
+  </footer>
+
+  <div class="donate-fab" id="donateFab" data-venmo-handle="VENMO_HANDLE" data-paypal-handle="perrynick" style="display:flex !important; visibility:visible !important;">
+    <button type="button" class="donate-fab-toggle" id="donateFabToggle" aria-expanded="false" aria-controls="donateFabMenu">
+      Donate
+    </button>
+    <div class="donate-fab-menu" id="donateFabMenu" hidden>
+      <a class="donate-link" id="donateVenmo" href="https://venmo.com/u/PLACEHOLDER" target="_blank" rel="noopener noreferrer" hidden>Venmo</a>
+      <a class="donate-link" id="donatePaypal" href="https://paypal.me/perrynick" target="_blank" rel="noopener noreferrer">PayPal</a>
+    </div>
+  </div>
+
+  <script src="js/main-v2.js?v=3" defer></script>
+</body>
+</html>

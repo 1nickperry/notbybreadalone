@@ -1,0 +1,21 @@
+RewriteEngine On
+
+# Pretty routes for signup / unsubscribe
+RewriteRule ^add/?$ add.php [L,QSA]
+RewriteRule ^remove/?$ remove.php [L,QSA]
+
+# Serve the marketing SPA at /
+DirectoryIndex index.html
+
+# If the request is not a real file/dir, fall back to index.html for same-origin SPA paths
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_URI} !^/(add|remove)
+RewriteRule ^ index.html [L]
+
+<IfModule mod_headers.c>
+  <FilesMatch "\.(html|css|js)$">
+    Header set Cache-Control "no-cache, no-store, must-revalidate"
+    Header set Pragma "no-cache"
+  </FilesMatch>
+</IfModule>

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Unsubscribe | daily verse</title>
+  <meta name="description" content="Unsubscribe from daily verse text messages. Enter your phone number to stop receiving scriptures." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&family=Urbanist:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css?v=20260928-1136" />
+</head>
+<body>
+  <header class="site-header">
+    <nav class="nav-left" aria-label="Primary">
+      <a href="/#about">About</a>
+      <a href="/#contact">Contact</a>
+      <div class="account-wrap">
+        <button type="button" class="account-btn" aria-expanded="false" aria-haspopup="true" id="accountBtn">
+          Account
+          <svg class="chevron" width="12" height="8" viewBox="0 0 12 8" aria-hidden="true"><path d="M1 1.5L6 6.5L11 1.5" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>
+        </button>
+        <div class="account-menu" id="accountMenu" hidden>
+          <a href="/#signup">Sign Up</a>
+          <a href="/#contact">Support</a>
+          <a href="/unsubscribe.html">Unsubscribe</a>
+        </div>
+      </div>
+    </nav>
+    <a href="/" class="logo" aria-label="daily verse home">
+      <span>daily</span>
+      <span>verse</span>
+    </a>
+    <div class="nav-spacer" aria-hidden="true"></div>
+  </header>
+
+  <main>
+    <section class="unsubscribe-page" id="unsubscribe">
+      <div class="section-inner">
+        <h1 class="headline unsubscribe-headline">Unsubscribe</h1>
+        <p class="unsubscribe-lead">
+          We are sad to see you go. Enter your phone number below to stop receiving
+          daily verse texts. A short reason helps us serve people better next time.
+        </p>
+
+        <form class="unsubscribe-form" id="unsubscribeForm" novalidate>
+          <label class="field">
+            <span class="field-label">Phone number</span>
+            <div class="phone-row">
+              <div class="country" aria-label="Country code">
+                <span>US (+1)</span>
+              </div>
+              <input
+                type="tel"
+                id="phone"
+                name="phone"
+                inputmode="tel"
+                autocomplete="tel-national"
+                placeholder="123-456-7890"
+                maxlength="14"
+                required
+                aria-describedby="unsubscribeMessage"
+              />
+            </div>
+          </label>
+
+          <label class="field">
+            <span class="field-label">Reason <span class="field-hint">(at least 10 characters)</span></span>
+            <textarea
+              id="reason"
+              name="reason"
+              rows="4"
+              minlength="10"
+              required
+              placeholder="Tell us why you are unsubscribing..."
+              aria-describedby="unsubscribeMessage"
+            ></textarea>
+          </label>
+
+          <button type="submit" class="signup-btn unsubscribe-submit">Remove my number</button>
+          <p class="form-message" id="unsubscribeMessage" role="status" aria-live="polite"></p>
+        </form>
+
+        <p class="muted unsubscribe-alt">
+          Prefer a direct link? TextLink-style removals still work at
+          <a href="/remove">/remove</a>. Questions?
+          <a href="mailto:hi@notbybreadalone.app">hi@notbybreadalone.app</a>
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>&copy; <span id="year"></span> daily verse. All rights reserved.</p>
+  </footer>
+
+  <div class="donate-fab" id="donateFab" data-venmo-handle="VENMO_HANDLE" data-paypal-handle="perrynick">
+    <button type="button" class="donate-fab-toggle" id="donateFabToggle" aria-expanded="false" aria-controls="donateFabMenu">
+      Donate
+    </button>
+    <div class="donate-fab-menu" id="donateFabMenu" hidden>
+      <a class="donate-link" id="donateVenmo" href="https://venmo.com/u/PLACEHOLDER" target="_blank" rel="noopener noreferrer" hidden>Venmo</a>
+      <a class="donate-link" id="donatePaypal" href="https://paypal.me/perrynick" target="_blank" rel="noopener noreferrer">PayPal</a>
+    </div>
+  </div>
+
+  <script src="js/main.js?v=20260928-1136" defer></script>
+</body>
+</html>
