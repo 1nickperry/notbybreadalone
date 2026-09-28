@@ -245,8 +245,8 @@ a:hover {
 }
 
 .subtext {
-  margin: 0 auto 1.5rem;
-  font-size: 1.05rem;
+  margin: 1.15rem auto 0;
+  font-size: 1.02rem;
   font-weight: 500;
   line-height: 1.45;
   max-width: 32rem;
@@ -399,19 +399,21 @@ a:hover {
   aspect-ratio: 9 / 19.2;
   transform: rotate(19deg);
   transform-origin: 50% 55%;
-  filter: drop-shadow(0 18px 28px rgba(29, 74, 97, 0.18));
+  -webkit-font-smoothing: antialiased;
 }
 
 .iphone-bezel {
   position: relative;
   width: 100%;
   height: 100%;
-  padding: 0.55rem;
-  border-radius: 2.35rem;
-  background: linear-gradient(160deg, #3a3a3e 0%, #1a1a1c 40%, #2c2c30 100%);
+  padding: 0.48rem;
+  border-radius: 2.4rem;
+  background: linear-gradient(145deg, #2f2f33 0%, #0f0f11 45%, #1e1e22 100%);
   box-shadow:
-    inset 0 0 0 1.5px rgba(220, 220, 225, 0.55),
-    inset 0 0 0 3px #111;
+    inset 0 0 0 1.5px rgba(210, 210, 218, 0.5),
+    inset 0 0 0 3px #0a0a0b,
+    0 18px 32px rgba(29, 74, 97, 0.18),
+    0 6px 12px rgba(29, 74, 97, 0.1);
 }
 
 .iphone-side {
@@ -437,14 +439,16 @@ a:hover {
 
 .iphone-island {
   position: absolute;
-  top: 0.85rem;
+  top: 0.48rem;
   left: 50%;
-  z-index: 4;
-  width: 28%;
+  z-index: 5;
+  width: 30%;
+  max-width: 5rem;
   height: 1.05rem;
   transform: translateX(-50%);
   border-radius: 999px;
-  background: #0a0a0b;
+  background: #000;
+  pointer-events: none;
 }
 
 .iphone-screen {
@@ -452,35 +456,59 @@ a:hover {
   width: 100%;
   height: 100%;
   overflow: hidden;
-  border-radius: 1.85rem;
+  border-radius: 1.95rem;
   background: #f2f2f7;
   display: flex;
   flex-direction: column;
 }
 
 .imessage-statusbar {
-  display: flex;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(2.6rem, 32%) minmax(0, 1fr);
   align-items: center;
-  justify-content: space-between;
-  padding: 0.72rem 0.85rem 0.2rem;
-  font-size: 0.62rem;
+  column-gap: 0.15rem;
+  padding: 0.52rem 0.7rem 0.2rem;
+  font-size: 0.55rem;
   font-weight: 600;
   color: #111;
   flex-shrink: 0;
+  position: relative;
+  z-index: 2;
+}
+
+.imessage-time {
+  justify-self: start;
+  padding-left: 0.15rem;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+}
+
+.imessage-island-gap {
+  display: block;
+  height: 1rem;
+  /* reserves center band under the Dynamic Island */
 }
 
 .imessage-status-icons {
   display: inline-flex;
   align-items: center;
-  gap: 0.28rem;
+  justify-self: end;
+  gap: 0.2rem;
+  padding-right: 0.05rem;
+}
+
+.imessage-battery {
+  width: 1.15rem;
+  height: auto;
+  display: block;
 }
 
 .imessage {
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 0.4rem;
-  padding: 0.55rem 0.55rem 0.75rem;
+  gap: 0.35rem;
+  padding: 0.45rem 0.5rem 0.65rem;
   overflow: hidden;
 }
 
@@ -495,9 +523,9 @@ a:hover {
   display: inline-flex;
   align-items: center;
   max-width: 85%;
-  padding: 0.28rem 0.55rem;
+  padding: 0.22rem 0.48rem;
   border-radius: 999px;
-  font-size: 0.58rem;
+  font-size: 0.5rem;
   font-weight: 600;
   letter-spacing: 0.01em;
   line-height: 1.2;
@@ -505,9 +533,9 @@ a:hover {
 
 .imessage-bubble.incoming {
   align-self: flex-start;
-  max-width: 94%;
-  padding: 0.45rem 0.55rem 0.4rem;
-  border-radius: 1.05rem;
+  max-width: 92%;
+  padding: 0.4rem 0.5rem 0.38rem;
+  border-radius: 0.95rem;
   background: var(--bubble-in);
   color: #111;
   box-shadow: 0 1px 0 rgba(0, 0, 0, 0.04);
@@ -515,15 +543,15 @@ a:hover {
 
 .imessage-bubble.incoming p {
   margin: 0;
-  font-size: 0.58rem;
-  line-height: 1.35;
+  font-size: 0.52rem;
+  line-height: 1.34;
   font-weight: 500;
 }
 
 .imessage-ref {
   display: block;
-  margin-top: 0.28rem;
-  font-size: 0.5rem;
+  margin-top: 0.22rem;
+  font-size: 0.42rem;
   font-weight: 600;
   color: var(--ink);
   opacity: 0.85;
@@ -845,6 +873,26 @@ a:hover {
     width: min(100%, 152px);
   }
 
+  .imessage-bubble.incoming p {
+    font-size: 0.4rem;
+    line-height: 1.28;
+  }
+
+  .imessage-chip {
+    font-size: 0.4rem;
+    padding: 0.15rem 0.38rem;
+  }
+
+  .imessage-ref {
+    font-size: 0.34rem;
+  }
+
+  .iphone-island {
+    top: 0.4rem;
+    height: 0.78rem;
+    width: 28%;
+  }
+
   .hero {
     min-height: 0;
     padding: 1.5rem 1.25rem 2.5rem;
@@ -913,7 +961,29 @@ a:hover {
   }
 
   .imessage-bubble.incoming p {
-    font-size: 0.52rem;
+    font-size: 0.38rem;
+    line-height: 1.28;
+  }
+
+  .imessage-chip {
+    font-size: 0.38rem;
+    padding: 0.14rem 0.34rem;
+  }
+
+  .imessage-ref {
+    font-size: 0.32rem;
+  }
+
+  .iphone-island {
+    top: 0.36rem;
+    height: 0.72rem;
+    width: 30%;
+  }
+
+  .imessage-statusbar {
+    padding: 0.42rem 0.45rem 0.12rem;
+    font-size: 0.44rem;
+    grid-template-columns: 1fr 2fr 1fr;
   }
 }
 
