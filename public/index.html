@@ -19,7 +19,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&family=Urbanist:wght@400;500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/styles-v3.css?v=4" />
+  <link rel="stylesheet" href="css/styles-v3.css?v=5" />
 </head>
 <body>
   <header class="site-header">
@@ -114,13 +114,18 @@
       </div>
 
       <div class="hero-phone">
-        <img
-          src="assets/phone-hero-v2.png?v=hero552210"
-          alt="iPhone showing daily verse text messages about Faith and Courage"
-          width="359"
-          height="517"
-          decoding="async"
-        />
+        <div class="hero-phone-stage">
+          <div class="hero-phone-shadow" id="heroPhoneShadow" aria-hidden="true"></div>
+          <div class="hero-phone-float" id="heroPhoneFloat">
+            <img
+              src="assets/phone-hero-v3.png?v=float1"
+              alt="iPhone showing daily verse text messages about Faith and Courage"
+              width="1024"
+              height="1024"
+              decoding="async"
+            />
+          </div>
+        </div>
       </div>
     </section>
 
@@ -173,6 +178,7 @@
 
   <footer class="site-footer">
     <p>&copy; <span id="year"></span> daily verse. All rights reserved.</p>
+    <p class="footer-blessing">Jesus ♥ You</p>
   </footer>
 
   <div class="donate-fab" id="donateFab" data-venmo-handle="VENMO_HANDLE" data-paypal-handle="perrynick" style="display:flex !important; visibility:visible !important;">
@@ -185,6 +191,7 @@
     </div>
   </div>
 
-  <script src="js/main-v3.js?v=4" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>
+  <script src="js/main-v3.js?v=5" defer></script>
 </body>
 </html>

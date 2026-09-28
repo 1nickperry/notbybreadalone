@@ -8,6 +8,49 @@
   var yearEl = document.getElementById("year");
   if (yearEl) yearEl.textContent = String(new Date().getFullYear());
 
+  // Gentle hero phone float + synced contact shadow (GSAP CDN).
+  (function initHeroFloat() {
+    var floatEl = document.getElementById("heroPhoneFloat");
+    var shadowEl = document.getElementById("heroPhoneShadow");
+    if (!floatEl || !shadowEl) return;
+    if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      return;
+    }
+    function start() {
+      if (!window.gsap) return false;
+      gsap.to(floatEl, {
+        y: -12,
+        duration: 3,
+        ease: "sine.inOut",
+        yoyo: true,
+        repeat: -1,
+      });
+      gsap.fromTo(
+        shadowEl,
+        { scaleX: 1, scaleY: 1, opacity: 0.85 },
+        {
+          scaleX: 0.88,
+          scaleY: 0.82,
+          opacity: 0.5,
+          duration: 3,
+          ease: "sine.inOut",
+          yoyo: true,
+          repeat: -1,
+        }
+      );
+      return true;
+    }
+    if (!start()) {
+      // GSAP is deferred; retry briefly until available.
+      var tries = 0;
+      var timer = setInterval(function () {
+        tries += 1;
+        if (start() || tries > 40) clearInterval(timer);
+      }, 50);
+    }
+  })();
+
+
   var accountBtn = document.getElementById("accountBtn");
   var accountMenu = document.getElementById("accountMenu");
   if (accountBtn && accountMenu) {
@@ -109,7 +152,7 @@
     var paypal =
       (donateFab.getAttribute("data-paypal-handle") || PAYPAL_HANDLE || "").trim();
     if (isDonatePlaceholder(venmo) && isDonatePlaceholder(paypal)) {
-      donateFab.hidden = true;
+      /* keep donate visible */ donateFab.hidden = false;
       donateFab.setAttribute("aria-hidden", "true");
     } else {
       donateFab.hidden = false;
