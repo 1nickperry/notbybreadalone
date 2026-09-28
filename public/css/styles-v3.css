@@ -33,7 +33,7 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* Subtle depth background (noise + navy blobs) — behind content */
+/* Subtle depth background (noise + blobs + lime accents) — behind content */
 .depth-bg {
   position: fixed;
   inset: 0;
@@ -45,7 +45,7 @@ body {
 .depth-noise {
   position: absolute;
   inset: 0;
-  background-image: url("../assets/noise-texture.webp?v=20260928-1445");
+  background-image: url("../assets/noise-texture.webp?v=20260928-1504");
   background-repeat: repeat;
   background-size: 420px 420px;
   opacity: 0.135; /* 1.5x — stronger grain; multiply keeps white clean */
@@ -79,11 +79,41 @@ body {
   opacity: 1; /* 1.5x target, capped at CSS maximum */
 }
 
-.site-header {
-  position: relative;
-  z-index: 10;
+.depth-arc {
+  position: absolute;
+  width: clamp(88px, 11vw, 140px);
+  height: clamp(88px, 11vw, 140px);
+  right: clamp(6%, 14vw, 22%);
+  top: clamp(7rem, 18vh, 11rem);
+  color: var(--lime);
+  opacity: 0.825;
+  will-change: transform;
 }
 
+.depth-dot {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--lime);
+  opacity: 1; /* 1.5x target, capped at CSS maximum */
+  will-change: transform;
+}
+
+.depth-dot--1 {
+  right: clamp(18%, 26vw, 34%);
+  top: clamp(5.5rem, 14vh, 9rem);
+}
+
+.depth-dot--2 {
+  width: 4px;
+  height: 4px;
+  right: clamp(10%, 18vw, 26%);
+  top: clamp(14rem, 32vh, 22rem);
+  opacity: 0.825;
+}
+
+.site-header,
 main,
 .site-footer {
   position: relative;
@@ -103,6 +133,22 @@ main,
     right: -22%;
     top: 62%;
   }
+  .depth-arc {
+    right: 4%;
+    top: auto;
+    bottom: 38%;
+    opacity: 0.6;
+  }
+  .depth-dot--1 {
+    right: 12%;
+    top: auto;
+    bottom: 52%;
+  }
+  .depth-dot--2 {
+    right: 8%;
+    top: auto;
+    bottom: 34%;
+  }
   .depth-noise {
     opacity: 0.105;
     background-size: 320px 320px;
@@ -111,7 +157,8 @@ main,
 
 @media (prefers-reduced-motion: reduce) {
   .depth-blob,
-  .depth-noise {
+  .depth-arc,
+  .depth-dot {
     will-change: auto;
   }
 }
@@ -135,6 +182,7 @@ a:hover {
   padding: 1.25rem 2.5rem 0.5rem;
   max-width: 1200px;
   margin: 0 auto;
+  border-bottom: 1.5px solid var(--border);
 }
 
 .nav-left {
@@ -563,8 +611,6 @@ a:hover {
 
 .imessage-time {
   justify-self: start;
-  font-size: 0.68rem;
-  line-height: 1;
   padding-left: 0.15rem;
   letter-spacing: -0.01em;
   white-space: nowrap;
@@ -1088,19 +1134,56 @@ a:hover {
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .hero-phone-float,
-  .hero-phone-shadow {
-    will-change: auto;
+/* Laptop mockup fit: keep the second verse clear of the keyboard while
+   preserving the larger desktop treatment at 1440px and up. */
+@media (min-width: 901px) and (max-width: 1366px) {
+  .imessage-thread {
+    gap: 0.27rem;
+    padding: 0.32rem 0.48rem 0.24rem 0.88rem;
   }
 
-  .iphone-frame {
-    transform: rotate(19deg);
+  .imessage-verse-pair {
+    gap: 0.27rem;
+  }
+
+  .imessage-chip {
+    font-size: 0.68rem;
+    padding: 0.27rem 0.58rem;
+  }
+
+  .imessage-bubble.incoming {
+    max-width: 96%;
+    padding: 0.48rem 0.58rem 0.44rem 0.62rem;
+    border-radius: 1.1rem;
+    border-bottom-left-radius: 0.16rem;
+  }
+
+  .imessage-bubble.incoming p {
+    font-size: 0.76rem;
+    line-height: 1.22;
+  }
+
+  .imessage-ref {
+    margin-top: 0.24rem;
+    font-size: 0.5rem;
+  }
+
+  .imessage-bubble.incoming::before {
+    left: -0.48rem;
+    width: 1.12rem;
+    height: 1.12rem;
+    border-bottom-right-radius: 0.88rem;
+  }
+
+  .imessage-bubble.incoming::after {
+    left: -0.66rem;
+    width: 0.66rem;
+    height: 1.12rem;
+    border-bottom-right-radius: 0.76rem;
   }
 }
 
-/* Keep the tilted phone from crowding the signup copy on laptop widths.
-   The base desktop treatment stays roomy for larger screens. */
+/* Keep the tilted phone from crowding the signup copy on laptop widths. */
 @media (min-width: 901px) and (max-width: 1280px) {
   .hero {
     grid-template-columns: minmax(0, 1fr) minmax(260px, 340px);
@@ -1125,8 +1208,7 @@ a:hover {
   }
 }
 
-/* A small step down keeps the 1366px laptop composition balanced too. */
-@media (min-width: 1281px) and (max-width: 1400px) {
+@media (min-width: 1281px) and (max-width: 1366px) {
   .hero-phone {
     margin-right: 0;
     padding-right: 1rem;
@@ -1140,6 +1222,17 @@ a:hover {
 
   .hero-phone-float {
     width: min(100%, 280px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-phone-float,
+  .hero-phone-shadow {
+    will-change: auto;
+  }
+
+  .iphone-frame {
+    transform: rotate(19deg);
   }
 }
 
@@ -1344,10 +1437,6 @@ a:hover {
     padding: 0.42rem 0.45rem 0.12rem;
     font-size: 0.44rem;
     grid-template-columns: 1fr 2fr 1fr;
-  }
-
-  .imessage-time {
-    font-size: 0.52rem;
   }
 }
 
