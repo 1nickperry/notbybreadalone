@@ -934,42 +934,42 @@ a:hover {
   }
 
   .imessage-chip {
-    font-size: 0.78rem;
-    padding: 0.36rem 0.78rem;
+    font-size: 0.86rem;
+    padding: 0.38rem 0.82rem;
   }
 
   .imessage-bubble.incoming {
-    max-width: 96%;
-    padding: 0.66rem 0.8rem 0.62rem 0.82rem;
-    border-radius: 1.32rem;
-    border-bottom-left-radius: 0.16rem;
+    max-width: 97%;
+    padding: 0.7rem 0.84rem 0.66rem 0.86rem;
+    border-radius: 1.35rem;
+    border-bottom-left-radius: 0.14rem;
   }
 
   .imessage-bubble.incoming p {
-    font-size: 0.9rem;
-    line-height: 1.27;
+    font-size: 1.02rem;
+    line-height: 1.26;
   }
 
   .imessage-ref {
-    margin-top: 0.34rem;
-    font-size: 0.66rem;
+    margin-top: 0.36rem;
+    font-size: 0.72rem;
   }
 
   .imessage-tail {
-    left: -0.55rem;
+    left: -0.62rem;
     bottom: 0;
-    width: 1.05rem;
-    height: 1.15rem;
+    width: 1.2rem;
+    height: 1.3rem;
   }
 
   .imessage-tail-fill {
-    border-bottom-right-radius: 0.85rem;
+    border-bottom-right-radius: 0.95rem;
   }
 
   .imessage-tail-cut {
-    left: -0.45rem;
-    width: 0.58rem;
-    border-bottom-right-radius: 0.65rem;
+    left: -0.5rem;
+    width: 0.65rem;
+    border-bottom-right-radius: 0.72rem;
   }
 
   .ios-keyboard {
