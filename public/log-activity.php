@@ -12,6 +12,23 @@ if (!function_exists("dv_activity_load_env")) {
         if ($cached !== null) {
             return $cached;
         }
+        $parseEnvFile = static function ($envFile) {
+            $values = [];
+            if (!is_file($envFile)) {
+                return $values;
+            }
+            foreach (file($envFile, FILE_IGNORE_NEW_LINES) as $line) {
+                $line = trim($line);
+                if ($line === "" || $line[0] === "#" || strpos($line, "=") === false) {
+                    continue;
+                }
+                [$key, $value] = explode("=", $line, 2);
+                $values[trim($key)] = trim($value);
+            }
+            return $values;
+        };
+
+        // Preserve the existing search order and first-match behavior.
         $candidates = [
             "/home/u593240408/morning-bible-verse/.env",
             dirname(__DIR__) . "/.env",
@@ -21,16 +38,25 @@ if (!function_exists("dv_activity_load_env")) {
             if (!is_file($envFile)) {
                 continue;
             }
-            foreach (file($envFile, FILE_IGNORE_NEW_LINES) as $line) {
-                $line = trim($line);
-                if ($line === "" || $line[0] === "#" || strpos($line, "=") === false) {
-                    continue;
-                }
-                [$key, $value] = explode("=", $line, 2);
-                $env[trim($key)] = trim($value);
-            }
+            $env = $parseEnvFile($envFile);
             break;
         }
+
+        // Allow a public_html-local .env to add or override settings.
+        $env = array_merge($env, $parseEnvFile(__DIR__ . "/.env"));
+
+        // A deployed sidecar file is the final override for this webhook.
+        $webhookFile = __DIR__ . "/sheets-webhook.url";
+        if (is_file($webhookFile)) {
+            $lines = file($webhookFile, FILE_IGNORE_NEW_LINES);
+            if ($lines !== false && isset($lines[0])) {
+                $webhook = trim($lines[0]);
+                if ($webhook !== "") {
+                    $env["GOOGLE_SHEETS_WEBHOOK_URL"] = $webhook;
+                }
+            }
+        }
+
         $cached = $env;
         return $env;
     }
