@@ -8,40 +8,41 @@
   var yearEl = document.getElementById("year");
   if (yearEl) yearEl.textContent = String(new Date().getFullYear());
 
-  // Gentle hero phone float + synced contact shadow (GSAP CDN).
+  // Gentle hero phone float + synced soft contact shadow (GSAP CDN).
   (function initHeroFloat() {
     var floatEl = document.getElementById("heroPhoneFloat");
     var shadowEl = document.getElementById("heroPhoneShadow");
-    if (!floatEl || !shadowEl) return;
+    if (!floatEl) return;
     if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       return;
     }
     function start() {
       if (!window.gsap) return false;
       gsap.to(floatEl, {
-        y: -12,
-        duration: 3,
+        y: -14,
+        duration: 3.2,
         ease: "sine.inOut",
         yoyo: true,
         repeat: -1,
       });
-      gsap.set(shadowEl, { transformOrigin: "50% 92%" });
-      gsap.fromTo(
-        shadowEl,
-        { scale: 1, opacity: 0.9 },
-        {
-          scale: 0.86,
-          opacity: 0.45,
-          duration: 3,
-          ease: "sine.inOut",
-          yoyo: true,
-          repeat: -1,
-        }
-      );
+      if (shadowEl) {
+        gsap.set(shadowEl, { transformOrigin: "50% 50%" });
+        gsap.fromTo(
+          shadowEl,
+          { scale: 1, opacity: 0.95 },
+          {
+            scale: 0.82,
+            opacity: 0.4,
+            duration: 3.2,
+            ease: "sine.inOut",
+            yoyo: true,
+            repeat: -1,
+          }
+        );
+      }
       return true;
     }
     if (!start()) {
-      // GSAP is deferred; retry briefly until available.
       var tries = 0;
       var timer = setInterval(function () {
         tries += 1;
