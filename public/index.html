@@ -19,7 +19,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&family=Urbanist:wght@400;500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/styles-v3.css?v=5" />
+  <link rel="stylesheet" href="css/styles-v3.css?v=6" />
 </head>
 <body>
   <header class="site-header">
@@ -115,15 +115,31 @@
 
       <div class="hero-phone">
         <div class="hero-phone-stage">
-          <div class="hero-phone-shadow" id="heroPhoneShadow" aria-hidden="true"></div>
+          <div class="hero-phone-shadow" id="heroPhoneShadow" aria-hidden="true">
+            <picture>
+              <source srcset="assets/phone-hero-3d-shadow.webp?v=3d1" type="image/webp" />
+              <img
+                src="assets/phone-hero-3d-shadow.png?v=3d1"
+                alt=""
+                width="1024"
+                height="1024"
+                decoding="async"
+                draggable="false"
+              />
+            </picture>
+          </div>
           <div class="hero-phone-float" id="heroPhoneFloat">
-            <img
-              src="assets/phone-hero-v3.png?v=float1"
-              alt="iPhone showing daily verse text messages about Faith and Courage"
-              width="1024"
-              height="1024"
-              decoding="async"
-            />
+            <picture>
+              <source srcset="assets/phone-hero-3d.webp?v=3d1" type="image/webp" />
+              <img
+                src="assets/phone-hero-3d.png?v=3d1"
+                alt="iPhone showing daily verse text messages about Faith and Courage"
+                width="1024"
+                height="1024"
+                decoding="async"
+                draggable="false"
+              />
+            </picture>
           </div>
         </div>
       </div>
@@ -192,6 +208,6 @@
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>
-  <script src="js/main-v3.js?v=5" defer></script>
+  <script src="js/main-v3.js?v=6" defer></script>
 </body>
 </html>

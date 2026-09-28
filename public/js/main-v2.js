@@ -25,13 +25,13 @@
         yoyo: true,
         repeat: -1,
       });
+      gsap.set(shadowEl, { transformOrigin: "50% 92%" });
       gsap.fromTo(
         shadowEl,
-        { scaleX: 1, scaleY: 1, opacity: 0.85 },
+        { scale: 1, opacity: 0.9 },
         {
-          scaleX: 0.88,
-          scaleY: 0.82,
-          opacity: 0.5,
+          scale: 0.86,
+          opacity: 0.45,
           duration: 3,
           ease: "sine.inOut",
           yoyo: true,

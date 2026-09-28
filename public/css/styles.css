@@ -327,38 +327,38 @@ a:hover {
 .hero-phone-float {
   position: relative;
   z-index: 2;
+  width: 100%;
   will-change: transform;
 }
 
-.hero-phone-float img {
+.hero-phone-float picture,
+.hero-phone-shadow picture {
+  display: block;
+  width: 100%;
+}
+
+.hero-phone-float img,
+.hero-phone-shadow img {
   filter: none;
   box-shadow: none;
   -webkit-filter: none;
   width: 100%;
   height: auto;
   display: block;
+  user-select: none;
+  -webkit-user-drag: none;
 }
 
-/* Soft realistic oval contact shadow under the floating phone */
+/* Separate 3D contact shadow asset, same canvas as phone */
 .hero-phone-shadow {
   position: absolute;
   z-index: 1;
-  left: 21%;
-  bottom: 4%;
-  width: 58%;
-  height: 9%;
-  border-radius: 50%;
-  background: radial-gradient(
-    ellipse at center,
-    rgba(29, 74, 97, 0.28) 0%,
-    rgba(29, 74, 97, 0.14) 40%,
-    rgba(29, 74, 97, 0.04) 70%,
-    rgba(29, 74, 97, 0) 100%
-  );
-  filter: blur(6px);
+  left: 0;
+  top: 0;
+  width: 100%;
   pointer-events: none;
   will-change: transform, opacity;
-  transform-origin: center center;
+  transform-origin: 50% 92%;
 }
 
 /* About / Contact */
