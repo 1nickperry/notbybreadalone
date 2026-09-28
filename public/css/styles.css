@@ -456,18 +456,21 @@ a:hover {
   margin-top: 2rem;
 }
 
-/* Floating donate control */
+/* Floating donate control — bottom-right only */
 .donate-fab {
   position: fixed;
   right: 1.25rem;
   bottom: 1.25rem;
   left: auto;
   top: auto;
-  z-index: 9999;
+  z-index: 2147483647;
   display: flex;
   flex-direction: column-reverse;
   align-items: flex-end;
   gap: 0.5rem;
+  margin: 0;
+  transform: none;
+  inset: auto 1.25rem 1.25rem auto;
 }
 
 .donate-fab-toggle {
@@ -657,32 +660,66 @@ a:hover {
 /* fulfillment fully removed from UI */
 .selector-fulfillment, [data-fulfillment], #theme, #fulfillment { display: none !important; }
 
+/* Nav Donate link */
+.nav-donate {
+  color: #007AFF !important;
+  font-weight: 600 !important;
+  text-decoration: none !important;
+}
+.nav-donate:hover {
+  text-decoration: underline !important;
+}
 
-/* Donate FAB: bottom-right, subtle iMessage blue, always above header */
+/* Donate FAB: extreme bottom-right iMessage blue, never covered */
+#donateFab.donate-fab,
 .donate-fab {
   position: fixed !important;
   top: auto !important;
   left: auto !important;
-  bottom: 1.25rem !important;
-  right: 1.25rem !important;
-  z-index: 9999 !important;
+  bottom: max(1.25rem, env(safe-area-inset-bottom, 0px)) !important;
+  right: max(1.25rem, env(safe-area-inset-right, 0px)) !important;
+  inset: auto max(1.25rem, env(safe-area-inset-right, 0px)) max(1.25rem, env(safe-area-inset-bottom, 0px)) auto !important;
+  z-index: 2147483647 !important;
+  display: flex !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+  transform: none !important;
+  margin: 0 !important;
+  float: none !important;
 }
+#donateFab .donate-fab-toggle,
 .donate-fab-toggle {
-  background: rgba(0, 122, 255, 0.14) !important;
+  background: rgba(0, 122, 255, 0.16) !important;
   color: #007AFF !important;
-  border: 1px solid rgba(0, 122, 255, 0.4) !important;
-  box-shadow: 0 6px 20px rgba(0, 122, 255, 0.18) !important;
+  border: 1.5px solid rgba(0, 122, 255, 0.45) !important;
+  box-shadow: 0 8px 24px rgba(0, 122, 255, 0.22) !important;
   font-weight: 600 !important;
+  border-radius: 999px !important;
 }
+#donateFab .donate-fab-toggle:hover,
+#donateFab .donate-fab-toggle[aria-expanded="true"],
 .donate-fab-toggle:hover,
 .donate-fab-toggle[aria-expanded="true"] {
-  background: rgba(0, 122, 255, 0.22) !important;
+  background: rgba(0, 122, 255, 0.25) !important;
   color: #007AFF !important;
 }
+#donateFab .donate-fab-menu,
 .donate-fab-menu {
   background: #fff !important;
   border: 1px solid rgba(0, 122, 255, 0.25) !important;
 }
+#donateFab .donate-link,
 .donate-link {
   color: #007AFF !important;
+}
+@media (max-width: 900px) {
+  #donateFab.donate-fab,
+  .donate-fab {
+    left: auto !important;
+    top: auto !important;
+    right: max(0.85rem, env(safe-area-inset-right, 0px)) !important;
+    bottom: max(0.85rem, env(safe-area-inset-bottom, 0px)) !important;
+    inset: auto max(0.85rem, env(safe-area-inset-right, 0px)) max(0.85rem, env(safe-area-inset-bottom, 0px)) auto !important;
+  }
 }
