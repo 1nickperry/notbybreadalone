@@ -1,6 +1,8 @@
 <?php
 header("Content-Type: text/plain; charset=utf-8");
 
+require_once __DIR__ . "/log-activity.php";
+
 function projectDataDir() {
     // Prefer Hostinger absolute path; fall back to project data/ for local testing.
     $hostinger = "/home/u593240408/morning-bible-verse/data";
@@ -161,9 +163,30 @@ writeJsonFile($prefsFile, $prefs);
 $count = count($list);
 
 if ($already) {
+    dv_log_activity($dataDir, [
+        "action" => "subscribe_update",
+        "phone" => $phone,
+        "status" => "already_subscribed",
+        "version" => $entry["version"] ?? $version,
+        "time" => $entry["time"] ?? $time,
+        "theme" => $entry["theme"] ?? $theme,
+        "reason" => "",
+        "list_count" => $count,
+    ]);
     echo "Already on the list: $phone ($count numbers). Preferences saved.\n";
     exit;
 }
+
+dv_log_activity($dataDir, [
+    "action" => "subscribe",
+    "phone" => $phone,
+    "status" => "added",
+    "version" => $entry["version"] ?? $version,
+    "time" => $entry["time"] ?? $time,
+    "theme" => $entry["theme"] ?? $theme,
+    "reason" => "",
+    "list_count" => $count,
+]);
 
 // Optional admin notice SMS (same behavior as before). Skip quietly if .env missing.
 $envCandidates = [

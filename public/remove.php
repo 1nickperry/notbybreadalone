@@ -1,6 +1,8 @@
 <?php
 header("Content-Type: text/plain; charset=utf-8");
 
+require_once __DIR__ . "/log-activity.php";
+
 function projectDataDir() {
     $hostinger = "/home/u593240408/morning-bible-verse/data";
     if (is_dir($hostinger)) {
@@ -116,12 +118,20 @@ $list = array_values(array_filter($list, function ($item) {
 $index = array_search($phone, $list, true);
 $wasOnList = ($index !== false);
 
+// Snapshot preferences for the activity log before clearing.
+$prefs = readJsonFile($prefsFile, []);
+$prefEntry = (is_array($prefs) && isset($prefs[$phone]) && is_array($prefs[$phone]))
+    ? $prefs[$phone]
+    : [];
+$logVersion = isset($prefEntry["version"]) ? (string) $prefEntry["version"] : "";
+$logTime = isset($prefEntry["time"]) ? (string) $prefEntry["time"] : "";
+$logTheme = isset($prefEntry["theme"]) ? (string) $prefEntry["theme"] : "";
+
 if ($wasOnList) {
     array_splice($list, $index, 1);
     writeJsonFile($numbersFile, array_values($list));
 
     // Clear preferences for this phone when present. Never merge reasons into numbers.json.
-    $prefs = readJsonFile($prefsFile, []);
     if (is_array($prefs) && array_key_exists($phone, $prefs)) {
         unset($prefs[$phone]);
         writeJsonFile($prefsFile, $prefs);
@@ -151,9 +161,30 @@ if ($reason !== "") {
 $count = count($list);
 
 if (!$wasOnList) {
+    dv_log_activity($dataDir, [
+        "action" => "unsubscribe_miss",
+        "phone" => $phone,
+        "status" => "not_on_list",
+        "version" => $logVersion,
+        "time" => $logTime,
+        "theme" => $logTheme,
+        "reason" => $reason,
+        "list_count" => $count,
+    ]);
     echo "Not on the list: $phone ($count numbers)\n";
     exit;
 }
+
+dv_log_activity($dataDir, [
+    "action" => "unsubscribe",
+    "phone" => $phone,
+    "status" => "removed",
+    "version" => $logVersion,
+    "time" => $logTime,
+    "theme" => $logTheme,
+    "reason" => $reason,
+    "list_count" => $count,
+]);
 
 $envCandidates = [
     "/home/u593240408/morning-bible-verse/.env",
