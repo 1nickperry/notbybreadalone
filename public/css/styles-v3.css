@@ -424,7 +424,7 @@ a:hover {
   opacity: 0.27;
   mix-blend-mode: multiply;
   pointer-events: none;
-  z-index: 1;
+  z-index: -1;
 }
 
 .signup-btn:hover {
@@ -1010,7 +1010,7 @@ a:hover {
   opacity: 0.27;
   mix-blend-mode: multiply;
   pointer-events: none;
-  z-index: 0;
+  z-index: -1;
 }
 
 .donate-fab-toggle:hover {
