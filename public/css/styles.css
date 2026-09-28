@@ -503,23 +503,6 @@ a:hover {
   opacity: 0.85;
 }
 
-/* Soft lime decorative stars (restrained) */
-.hero-star {
-  position: absolute;
-  z-index: 3;
-  width: 0.7rem;
-  height: 0.7rem;
-  background: var(--lime);
-  clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
-  opacity: 0.9;
-  pointer-events: none;
-  filter: drop-shadow(0 2px 4px rgba(166, 236, 65, 0.35));
-}
-
-.hero-star-a { top: 6%; left: -8%; width: 0.85rem; height: 0.85rem; transform: rotate(-12deg); }
-.hero-star-b { top: 42%; right: -10%; width: 0.55rem; height: 0.55rem; transform: rotate(18deg); opacity: 0.75; }
-.hero-star-c { bottom: 12%; left: -6%; width: 0.65rem; height: 0.65rem; transform: rotate(8deg); opacity: 0.8; }
-
 /* About / Contact */
 .about,
 .contact {
