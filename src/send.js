@@ -183,7 +183,7 @@ async function sendSms({ apiKey, phone, text, simCardId }) {
     body: JSON.stringify({
       phone_number: phone,
       text,
-      device_id: simCardId,
+      sim_card_id: simCardId,
     }),
   });
 
@@ -351,7 +351,7 @@ async function main() {
     }
     const status = result.queued ? "queued" : "sent";
     const modeTag = testMode ? " [TEST]" : "";
-    log(`${status} ${verse.reference} to ${phone} via device ${simCardId} (${activeSlot}${modeTag})`);
+    log(`${status} ${verse.reference} to ${phone} via sim_card_id ${simCardId} (${activeSlot}${modeTag})`);
   }
 
   if (failed === recipients.length) {
