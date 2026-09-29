@@ -62,7 +62,6 @@
     var chip1Desktop = document.getElementById("chip1-desktop");
     var bubble1 = document.getElementById("bubble1");
     var verse1 = document.getElementById("verse1");
-    var chip2 = document.getElementById("chip2");
     var bubble2 = document.getElementById("bubble2");
     var verse2 = document.getElementById("verse2");
     
@@ -79,10 +78,8 @@
       chip1.style.opacity = "1";
       bubble1.style.opacity = "1";
       
-      if (!isMobile && chip2 && verse2) {
-        chip2.textContent = chip2.getAttribute("data-text");
+      if (!isMobile && verse2) {
         verse2.textContent = verse2.getAttribute("data-text");
-        chip2.style.opacity = "1";
         bubble2.style.opacity = "1";
       }
       return;
@@ -91,7 +88,6 @@
     // Hide elements initially
     chip1.style.opacity = "0";
     bubble1.style.opacity = "0";
-    if (chip2) chip2.style.opacity = "0";
     if (bubble2) bubble2.style.opacity = "0";
     
     function waitForTyped(callback, maxTries) {
@@ -116,7 +112,7 @@
       var activeChipText = activeChipElement ? activeChipElement.getAttribute("data-text") : "";
       var verse1Text = verse1.getAttribute("data-text");
       
-      // Show chip1, then type its text (only in the active span)
+      // Show chip1, then type "Faith"
       chip1.style.opacity = "1";
       var typed1 = new Typed(activeChipTarget, {
         strings: [activeChipText],
@@ -131,27 +127,18 @@
               typeSpeed: 18,
               showCursor: false,
               onComplete: function() {
-                // Desktop only: show second pair
-                if (!isMobile && chip2 && verse2) {
+                // Desktop only: show second bubble and type verse 2 (no chip)
+                if (!isMobile && bubble2 && verse2) {
                   setTimeout(function() {
-                    chip2.style.opacity = "1";
-                    var chip2Text = chip2.getAttribute("data-text");
-                    var typed2 = new Typed("#chip2", {
-                      strings: [chip2Text],
-                      typeSpeed: 35,
-                      showCursor: false,
-                      onComplete: function() {
-                        bubble2.style.opacity = "1";
-                        setTimeout(function() {
-                          var verse2Text = verse2.getAttribute("data-text");
-                          var typedVerse2 = new Typed("#verse2", {
-                            strings: [verse2Text],
-                            typeSpeed: 18,
-                            showCursor: false,
-                          });
-                        }, 200);
-                      }
-                    });
+                    bubble2.style.opacity = "1";
+                    setTimeout(function() {
+                      var verse2Text = verse2.getAttribute("data-text");
+                      var typedVerse2 = new Typed("#verse2", {
+                        strings: [verse2Text],
+                        typeSpeed: 18,
+                        showCursor: false,
+                      });
+                    }, 200);
                   }, 400);
                 }
               }
