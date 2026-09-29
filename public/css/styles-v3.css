@@ -658,6 +658,7 @@ a:hover {
   line-height: 1.2;
   position: relative;
   z-index: 1;
+  transition: opacity 0.3s ease;
 }
 
 /* Responsive chip text: mobile shows "connect me with believers", desktop shows "connect with believers" */
@@ -682,6 +683,7 @@ a:hover {
   color: #111;
   box-shadow: none;
   z-index: 1;
+  transition: opacity 0.3s ease;
 }
 
 .imessage-bubble.incoming p {
