@@ -9,6 +9,14 @@ const prefsPath = path.join(root, "data", "preferences.json");
 const logPath = path.join(root, "data", "log.txt");
 const TIME_ZONE = "America/Denver";
 const DEFAULT_SLOT = "8:00 AM";
+const ALL_SLOTS = [
+  "6:00 AM",
+  "7:00 AM",
+  "8:00 AM",
+  "12:00 PM",
+  "6:00 PM",
+  "9:00 PM",
+];
 
 function loadEnv() {
   const envPath = path.join(root, ".env");
@@ -56,14 +64,20 @@ function denverHour(date = new Date()) {
   return Number(denverParts(date).hour);
 }
 
-function slotToHour(slot) {
+function slotToHourMinute(slot) {
   const match = String(slot || "").trim().match(/^(\d{1,2}):(\d{2})\s*(AM|PM)$/i);
   if (!match) return null;
   let hour = Number(match[1]);
+  const minute = Number(match[2]);
   const mer = match[3].toUpperCase();
   if (hour === 12) hour = 0;
   if (mer === "PM") hour += 12;
-  return hour;
+  return { hour, minute };
+}
+
+function slotToHour(slot) {
+  const parsed = slotToHourMinute(slot);
+  return parsed ? parsed.hour : null;
 }
 
 function hourToSlot(hour) {
@@ -76,6 +90,44 @@ function hourToSlot(hour) {
     21: "9:00 PM",
   };
   return map[hour] || null;
+}
+
+function isTestMode() {
+  return process.env.DV_TEST_MODE === "1" || process.env.DV_TEST_MODE === "true";
+}
+
+function formatSlot(hour, minute) {
+  let h = hour % 12;
+  if (h === 0) h = 12;
+  const mer = hour >= 12 ? "PM" : "AM";
+  return `${h}:${String(minute).padStart(2, "0")} ${mer}`;
+}
+
+function getCurrentTestSlot(date = new Date()) {
+  if (!isTestMode()) return null;
+  const parts = denverParts(date);
+  const hour = Number(parts.hour);
+  const minute = Number(parts.minute);
+  const roundedMinute = Math.floor(minute / 5) * 5;
+  return formatSlot(hour, roundedMinute);
+}
+
+function isValidTestSlot(slot) {
+  if (!isTestMode()) return false;
+  const parsed = slotToHourMinute(slot);
+  if (!parsed) return false;
+  return parsed.minute % 5 === 0;
+}
+
+function isSlotActive(slot, hour, minute) {
+  const parsed = slotToHourMinute(slot);
+  if (!parsed) return false;
+  
+  if (isTestMode()) {
+    return parsed.hour === hour && parsed.minute === minute;
+  } else {
+    return parsed.hour === hour && parsed.minute === 0;
+  }
 }
 
 function readState() {
@@ -181,23 +233,46 @@ async function main() {
   const state = readState();
   const prefs = readPreferences();
   const today = denverDate();
-  const hour = denverHour();
+  const parts = denverParts();
+  const hour = Number(parts.hour);
+  const minute = Number(parts.minute);
+  const testMode = isTestMode();
 
   let activeSlot = slotArg;
   if (!activeSlot) {
-    activeSlot = hourToSlot(hour) || DEFAULT_SLOT;
+    if (testMode) {
+      activeSlot = getCurrentTestSlot();
+      if (!activeSlot) {
+        log(`Test mode: unable to determine current 5-minute slot`);
+        return;
+      }
+    } else {
+      activeSlot = hourToSlot(hour);
+      if (!activeSlot) {
+        log(`No delivery slot at hour ${hour} ${TIME_ZONE}. Active slots: ${ALL_SLOTS.join(", ")}`);
+        return;
+      }
+    }
   }
-  const activeHour = slotToHour(activeSlot);
 
-  if (!force && !dryRun && activeHour !== hour) {
-    log(
-      `Waiting for ${activeSlot} ${TIME_ZONE}. It is ${String(hour).padStart(2, "0")}:00 there now.`
-    );
-    return;
+  if (!force && !dryRun) {
+    if (!isSlotActive(activeSlot, hour, minute)) {
+      const parsed = slotToHourMinute(activeSlot);
+      if (testMode) {
+        log(
+          `Waiting for ${activeSlot} ${TIME_ZONE}. It is ${String(hour).padStart(2, "0")}:${String(minute).padStart(2, "0")} there now. (test mode: 5-min intervals)`
+        );
+      } else {
+        log(
+          `Waiting for ${activeSlot} ${TIME_ZONE}. It is ${String(hour).padStart(2, "0")}:${String(minute).padStart(2, "0")} there now.`
+        );
+      }
+      return;
+    }
   }
 
-  if (!force && !dryRun && !slotArg && !hourToSlot(hour)) {
-    log(`No delivery slot at hour ${hour} ${TIME_ZONE}.`);
+  if (!force && !dryRun && !slotArg && !testMode && !hourToSlot(hour)) {
+    log(`No delivery slot at hour ${hour} ${TIME_ZONE}. Active slots: ${ALL_SLOTS.join(", ")}`);
     return;
   }
 
@@ -206,12 +281,30 @@ async function main() {
     recipients = phones.filter((phone) => {
       const pref = prefs[phone];
       const preferred = pref && typeof pref.time === "string" ? pref.time : DEFAULT_SLOT;
+      
+      if (testMode) {
+        if (isValidTestSlot(preferred)) {
+          return preferred === activeSlot;
+        }
+        if (ALL_SLOTS.includes(preferred)) {
+          return false;
+        }
+        return preferred === activeSlot;
+      }
+      
+      if (!ALL_SLOTS.includes(preferred)) {
+        return false;
+      }
       return preferred === activeSlot;
     });
   }
 
   if (recipients.length === 0) {
-    log(`No recipients for slot ${activeSlot}.`);
+    if (testMode) {
+      log(`No recipients for slot ${activeSlot} (test mode: 5-min boundaries).`);
+    } else {
+      log(`No recipients for slot ${activeSlot}.`);
+    }
     return;
   }
 
@@ -241,8 +334,9 @@ async function main() {
 
   if (dryRun) {
     console.log(text);
+    const mode = testMode ? ", test mode: 5-min" : "";
     console.log(
-      `\n(${verses.length} verses available, SIM ${simCardId}, ${TIME_ZONE} ${today}, slot ${activeSlot}, ${recipients.length} recipients)`
+      `\n(${verses.length} verses available, SIM ${simCardId}, ${TIME_ZONE} ${today}, slot ${activeSlot}, ${recipients.length} recipients${mode})`
     );
     return;
   }
@@ -256,7 +350,8 @@ async function main() {
       continue;
     }
     const status = result.queued ? "queued" : "sent";
-    log(`${status} ${verse.reference} to ${phone} via device ${simCardId} (${activeSlot})`);
+    const modeTag = testMode ? " [TEST]" : "";
+    log(`${status} ${verse.reference} to ${phone} via device ${simCardId} (${activeSlot}${modeTag})`);
   }
 
   if (failed === recipients.length) {

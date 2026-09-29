@@ -11,9 +11,10 @@ Marketing site and SMS signup for [notbybreadalone.app](https://notbybreadalone.
 
 ## Local notes
 
-1. Copy `.env.example` to `.env` and fill in Twilio (or other) credentials.
+1. Copy `.env.example` to `.env` and fill in TextLink (or other SMS provider) credentials.
 2. Do not commit `.env` or `data/numbers.json`.
 3. Deploy the contents of `public/` as the static site for `notbybreadalone.app`.
+4. For testing with 5-minute intervals, set `DV_TEST_MODE=1` in `.env` (see `DEPLOY.md` and `scripts/test-slot.md`).
 
 ## Donate
 
