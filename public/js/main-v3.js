@@ -13,9 +13,12 @@
     var floatEl = document.getElementById("heroPhoneFloat");
     var shadowEl = document.getElementById("heroPhoneShadow");
     if (!floatEl) return;
-    if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    
+    var prefersReduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (prefersReduced) {
       return;
     }
+    
     function start() {
       if (!window.gsap) return false;
       gsap.to(floatEl, {
@@ -42,6 +45,7 @@
       }
       return true;
     }
+    
     if (!start()) {
       var tries = 0;
       var timer = setInterval(function () {
@@ -49,6 +53,100 @@
         if (start() || tries > 40) clearInterval(timer);
       }, 50);
     }
+  })();
+
+  // Typed.js message sequence for hero iPhone mockup
+  (function initTypedMessages() {
+    var chip1 = document.getElementById("chip1");
+    var chip1Mobile = document.getElementById("chip1-mobile");
+    var chip1Desktop = document.getElementById("chip1-desktop");
+    var bubble1 = document.getElementById("bubble1");
+    var verse1 = document.getElementById("verse1");
+    var bubble2 = document.getElementById("bubble2");
+    var verse2 = document.getElementById("verse2");
+    
+    if (!chip1 || !verse1) return;
+    
+    var prefersReduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    var isMobile = window.innerWidth <= 900;
+    
+    // Show final text immediately if reduced motion
+    if (prefersReduced) {
+      if (chip1Mobile) chip1Mobile.textContent = chip1Mobile.getAttribute("data-text");
+      if (chip1Desktop) chip1Desktop.textContent = chip1Desktop.getAttribute("data-text");
+      verse1.textContent = verse1.getAttribute("data-text");
+      chip1.style.opacity = "1";
+      bubble1.style.opacity = "1";
+      
+      if (!isMobile && verse2) {
+        verse2.textContent = verse2.getAttribute("data-text");
+        bubble2.style.opacity = "1";
+      }
+      return;
+    }
+    
+    // Hide elements initially
+    chip1.style.opacity = "0";
+    bubble1.style.opacity = "0";
+    if (bubble2) bubble2.style.opacity = "0";
+    
+    function waitForTyped(callback, maxTries) {
+      if (!maxTries) maxTries = 40;
+      if (window.Typed) {
+        callback();
+      } else {
+        var tries = 0;
+        var timer = setInterval(function() {
+          tries += 1;
+          if (window.Typed || tries > maxTries) {
+            clearInterval(timer);
+            if (window.Typed) callback();
+          }
+        }, 50);
+      }
+    }
+    
+    waitForTyped(function() {
+      var activeChipTarget = isMobile ? "#chip1-mobile" : "#chip1-desktop";
+      var activeChipElement = isMobile ? chip1Mobile : chip1Desktop;
+      var activeChipText = activeChipElement ? activeChipElement.getAttribute("data-text") : "";
+      var verse1Text = verse1.getAttribute("data-text");
+      
+      // Show chip1, then type "Faith"
+      chip1.style.opacity = "1";
+      var typed1 = new Typed(activeChipTarget, {
+        strings: [activeChipText],
+        typeSpeed: 35,
+        showCursor: false,
+        onComplete: function() {
+          // Show bubble1, then type verse1
+          bubble1.style.opacity = "1";
+          setTimeout(function() {
+            var typedVerse1 = new Typed("#verse1", {
+              strings: [verse1Text],
+              typeSpeed: 18,
+              showCursor: false,
+              onComplete: function() {
+                // Desktop only: show second bubble and type verse 2 (no chip)
+                if (!isMobile && bubble2 && verse2) {
+                  setTimeout(function() {
+                    bubble2.style.opacity = "1";
+                    setTimeout(function() {
+                      var verse2Text = verse2.getAttribute("data-text");
+                      var typedVerse2 = new Typed("#verse2", {
+                        strings: [verse2Text],
+                        typeSpeed: 18,
+                        showCursor: false,
+                      });
+                    }, 200);
+                  }, 400);
+                }
+              }
+            });
+          }, 200);
+        }
+      });
+    });
   })();
 
   // Optional slow depth drift (navy blobs) — few px, behind content.

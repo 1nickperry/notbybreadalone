@@ -26,7 +26,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&family=Urbanist:wght@400;500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/styles-v3.css?v=20260929-0002" />
+  <link rel="stylesheet" href="css/styles-v3.css?v=20260929-0004" />
 </head>
 <body>
 
@@ -146,18 +146,17 @@
                   </div>
                   <div class="imessage">
                     <div class="imessage-thread">
-                      <div class="imessage-chip outgoing">
-                        <span class="chip-text-mobile">connect me with believers</span>
-                        <span class="chip-text-desktop">connect with believers</span>
+                      <div class="imessage-chip outgoing" id="chip1">
+                        <span class="chip-text-mobile" id="chip1-mobile" data-text="Faith"></span>
+                        <span class="chip-text-desktop" id="chip1-desktop" data-text="Faith"></span>
                       </div>
-                      <div class="imessage-bubble incoming">
-                        <p>"If ye have faith as a grain of mustard seed, ye shall say unto this mountain, Remove hence to yonder place; and it shall remove; and nothing shall be impossible unto you."</p>
+                      <div class="imessage-bubble incoming" id="bubble1">
+                        <p id="verse1" data-text='"If ye have faith as a grain of mustard seed, ye shall say unto this mountain, Remove hence to yonder place; and it shall remove; and nothing shall be impossible unto you."'></p>
                         <span class="imessage-ref">Matthew 17:20 · KJV</span>
                       </div>
                       <div class="imessage-verse-pair imessage-verse-pair--second">
-                        <div class="imessage-chip outgoing">send me something again</div>
-                        <div class="imessage-bubble incoming">
-                        <p>"Have not I commanded thee? Be strong and of a good courage; be not afraid, neither be thou dismayed: for the LORD thy God is with thee whithersoever thou goest."</p>
+                        <div class="imessage-bubble incoming" id="bubble2">
+                        <p id="verse2" data-text='"Have not I commanded thee? Be strong and of a good courage; be not afraid, neither be thou dismayed: for the LORD thy God is with thee whithersoever thou goest."'></p>
                           <span class="imessage-ref">Joshua 1:9 · KJV</span>
                         </div>
                       </div>
@@ -258,6 +257,7 @@
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js" defer></script>
-  <script src="js/main-v3.js?v=20260929-0002" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/typed.js@2.1.0/dist/typed.umd.js" defer></script>
+  <script src="js/main-v3.js?v=20260929-0004" defer></script>
 </body>
 </html>
