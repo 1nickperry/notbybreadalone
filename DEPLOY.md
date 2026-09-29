@@ -39,7 +39,7 @@ package.json
 Create `.env` on the server from `.env.example` with:
 
 - **`TEXTLINK_API_KEY`** - Your TextLink API key
-- **`SIM_CARD_ID`** - TextLink SIM card ID (the `sim_card_id` field from TextLink dashboard), NOT the device row ID. For US SMS to +17023422909, use `3874`.
+- **`SIM_CARD_ID`** - TextLink SIM card ID (the `sim_card_id` field from TextLink dashboard), NOT the device row ID. For US SMS to +17023422909 (Nick's S22 / TextLink device 3076 P43S), use `3887`.
 - **`RECIPIENT_PHONE`** - (Optional) Single test recipient in E.164 format
 - **`GOOGLE_SHEETS_WEBHOOK_URL`** - (Optional) Apps Script webhook for subscribe/unsubscribe logging
 - **`DV_TEST_MODE`** - (Optional) Set to `1` or `true` for 5-minute test intervals; leave unset for production
