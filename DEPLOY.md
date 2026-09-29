@@ -61,16 +61,40 @@ After first deploy with the new signup form, `data/preferences.json` is created 
 
 Confirm `mod_rewrite` (or LiteSpeed equivalent) is on. If pretty routes 404, keep calling `/add.php?=…` as a fallback.
 
-## Node sender (cron or long-running)
+## Node sender (cron recommended)
 
-On the VPS / Node host that already runs the TextLink worker:
+### Production: Cron every minute (recommended)
+
+Hostinger shared hosting cron setup (via hPanel → Advanced → Cron Jobs):
+
+```bash
+* * * * * cd /home/u593240408/morning-bible-verse && /usr/bin/node src/send.js >> data/cron-send.log 2>&1
+```
+
+**Why cron-every-minute wins:**
+- Survives PHP/Node process restarts automatically
+- No need to keep a long-running process alive
+- `send.js` is idempotent: checks Denver hour/minute against active slots
+- Only sends when the current minute matches a slot time (e.g., 8:00, 12:00)
+- Skips silently at all other minutes with clear logging
+
+**Logs:**
+- View `data/cron-send.log` for all cron runs
+- View `data/log.txt` for successful sends and errors
+
+### Alternative: Long-running schedule.js
+
+If you prefer a persistent process (e.g., on a VPS):
 
 ```bash
 cd /home/u593240408/morning-bible-verse
-npm run start          # long-running schedule.js
-# or cron every minute:
-# * * * * * cd /home/u593240408/morning-bible-verse && node src/send.js
+npm run start          # runs schedule.js with setTimeout scheduling
 ```
+
+**Caveats:**
+- Must stay running 24/7 (use systemd, PM2, or screen)
+- Hostinger shared hosting may kill idle processes
+- Fragile to process crashes; prefer cron for reliability
 
 ### Per-user send times
 
@@ -78,11 +102,40 @@ npm run start          # long-running schedule.js
 
 - Default delivery remains **8:00 AM America/Denver** for numbers with no preference.
 - If a phone has `"time": "12:00 PM"` (etc.), they are only included when that Mountain Time slot is due.
-- Allowed slots: 6:00 AM, 7:00 AM, 8:00 AM, 12:00 PM, 6:00 PM, 9:00 PM.
+- **Production allowed slots:** 6:00 AM, 7:00 AM, 8:00 AM, 12:00 PM, 6:00 PM, 9:00 PM.
 - `npm run now` / `node src/send.js --now` still texts **everyone** (ops override).
 - Theme / Bible version prefs are stored for future verse filtering. The current sender still picks from the shared `verses.json` pool until theme filtering is added.
 
-If you prefer zero risk to the live 8 AM blast, pin an older `schedule.js` / `send.js` and rely on preferences storage only. The marketing site and PHP signup work either way.
+### Test mode (5-minute intervals)
+
+For testing with temporary SMS numbers before deploying changes:
+
+1. Set environment variable `DV_TEST_MODE=1` in `.env`
+2. Add a test preference with a 5-minute boundary time:
+   ```json
+   {
+     "+15551234567": {
+       "time": "1:05 PM",
+       "version": "KJV",
+       "theme": "Faith"
+     }
+   }
+   ```
+3. Wait for the next 5-minute mark (e.g., 1:05 PM Mountain Time)
+4. Send will trigger automatically via cron, or manually: `node src/send.js`
+
+**Test mode behavior:**
+- Allows times on 5-minute boundaries: 1:00 PM, 1:05 PM, 1:10 PM, etc.
+- Ignores production slots (6 AM, 7 AM, etc.) unless recipients have those exact times
+- Logs include `[TEST]` tag for visibility
+- Cron every minute still works; just checks every 5 minutes instead of every hour
+
+**Production safety:**
+- Remove or unset `DV_TEST_MODE` from `.env` before deploying to production
+- Production mode ONLY accepts the 6 marketing slots listed above
+- Test preferences with 5-minute times are silently skipped in production mode
+
+**Use case:** Test with free temporary SMS numbers from services like receive-sms.com or smsreceivefree.com before deploying preference changes to production.
 
 ## Smoke checks after publish
 
