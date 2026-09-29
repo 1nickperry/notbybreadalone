@@ -660,6 +660,15 @@ a:hover {
   z-index: 1;
 }
 
+/* Responsive chip text: mobile shows "connect me with believers", desktop shows "connect with believers" */
+.chip-text-mobile {
+  display: inline;
+}
+
+.chip-text-desktop {
+  display: none;
+}
+
 /* Real iOS Messages incoming bubble + wispy tail */
 .imessage-bubble.incoming {
   position: relative;
@@ -1113,6 +1122,14 @@ a:hover {
   .imessage-chip {
     font-size: 0.86rem;
     padding: 0.38rem 0.82rem;
+  }
+
+  .chip-text-mobile {
+    display: none;
+  }
+
+  .chip-text-desktop {
+    display: inline;
   }
 
   .imessage-bubble.incoming {
