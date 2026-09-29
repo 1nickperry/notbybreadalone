@@ -2,6 +2,7 @@
 header("Content-Type: text/plain; charset=utf-8");
 
 require_once __DIR__ . "/log-activity.php";
+require_once __DIR__ . "/sms.php";
 
 function projectDataDir() {
     $hostinger = "/home/u593240408/morning-bible-verse/data";
@@ -186,6 +187,7 @@ dv_log_activity($dataDir, [
     "list_count" => $count,
 ]);
 
+// Load environment for SMS. Skip quietly if .env missing.
 $envCandidates = [
     "/home/u593240408/morning-bible-verse/.env",
     dirname(__DIR__) . "/.env",
@@ -199,29 +201,30 @@ foreach ($envCandidates as $envFile) {
 }
 
 if (!empty($env["TEXTLINK_API_KEY"])) {
-    $notice = "Removed $phone from the morning verse list.";
-    $payload = json_encode([
-        "phone_number" => "+17023422909",
-        "text" => $notice,
-        "device_id" => (int) ($env["SIM_CARD_ID"] ?? 3066),
-    ]);
-    $context = stream_context_create([
-        "http" => [
-            "method" => "POST",
-            "header" => "Content-Type: application/json\r\nAuthorization: Bearer " . $env["TEXTLINK_API_KEY"] . "\r\n",
-            "content" => $payload,
-            "timeout" => 20,
-            "ignore_errors" => true,
-        ],
-    ]);
-    $sent = @file_get_contents("https://textlinksms.com/api/send-sms", false, $context);
-    $result = json_decode($sent, true);
-    if (!is_array($result) || empty($result["ok"])) {
-        $smsReason = is_array($result) && isset($result["message"]) ? $result["message"] : "text failed";
-        echo "Removed $phone ($count numbers), but the notice to 7023422909 did not send: $smsReason\n";
+    // Send unsubscribe confirmation to the end user.
+    $confirmText = "You have been unsubscribed from Daily Verse. No more texts. Resubscribe anytime at notbybreadalone.app";
+    $userResult = dv_send_sms($phone, $confirmText, $env);
+
+    // Send admin notice to Nick.
+    $adminText = "Removed $phone from the morning verse list.";
+    $adminResult = dv_send_sms("+17023422909", $adminText, $env);
+
+    $userFailed = !$userResult["ok"];
+    $adminFailed = !$adminResult["ok"];
+
+    if ($userFailed && $adminFailed) {
+        echo "Removed $phone ($count numbers), but SMS to subscriber and admin both failed: user={$userResult['message']}, admin={$adminResult['message']}\n";
         exit;
     }
-    echo "Removed $phone ($count numbers). Texted 7023422909.\n";
+    if ($userFailed) {
+        echo "Removed $phone ($count numbers). Admin notified, but unsubscribe SMS to subscriber failed: {$userResult['message']}\n";
+        exit;
+    }
+    if ($adminFailed) {
+        echo "Removed $phone ($count numbers). Unsubscribe SMS sent, but notice to 7023422909 did not send: {$adminResult['message']}\n";
+        exit;
+    }
+    echo "Removed $phone ($count numbers). Unsubscribe SMS sent. Texted 7023422909.\n";
     exit;
 }
 
