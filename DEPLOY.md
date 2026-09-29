@@ -34,6 +34,16 @@ package.json
 .env          (create on server from .env.example; never commit)
 ```
 
+### Environment variables
+
+Create `.env` on the server from `.env.example` with:
+
+- **`TEXTLINK_API_KEY`** - Your TextLink API key
+- **`SIM_CARD_ID`** - TextLink SIM card ID (the `sim_card_id` field from TextLink dashboard), NOT the device row ID. For US SMS to +17023422909, use `3874`.
+- **`RECIPIENT_PHONE`** - (Optional) Single test recipient in E.164 format
+- **`GOOGLE_SHEETS_WEBHOOK_URL`** - (Optional) Apps Script webhook for subscribe/unsubscribe logging
+- **`DV_TEST_MODE`** - (Optional) Set to `1` or `true` for 5-minute test intervals; leave unset for production
+
 Do **not** overwrite `data/numbers.json` with an empty file. Prefer leaving the live file untouched, or merge carefully.
 
 After first deploy with the new signup form, `data/preferences.json` is created automatically on signup. Shape:

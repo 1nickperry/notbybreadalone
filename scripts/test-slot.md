@@ -116,7 +116,7 @@ node src/send.js
 
 Check `data/log.txt` for output like:
 - `"Waiting for 8:00 AM America/Denver. It is 08:01 there now."` (skipped)
-- `"sent Matthew 6:33 to +1... via device 2366 (8:00 AM)"` (sent)
+- `"sent Matthew 6:33 to +1... via sim_card_id 3874 (8:00 AM)"` (sent)
 - `"No recipients for slot 12:00 PM."` (no one signed up for that time)
 
 ## Idempotency check
