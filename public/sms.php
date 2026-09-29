@@ -19,7 +19,7 @@ function dv_send_sms($phone, $text, $env) {
     $payload = json_encode([
         "phone_number" => $phone,
         "text" => $text,
-        "device_id" => (int) ($env["SIM_CARD_ID"] ?? 3066),
+        "sim_card_id" => (int) ($env["SIM_CARD_ID"] ?? 3066),
     ]);
 
     $context = stream_context_create([
