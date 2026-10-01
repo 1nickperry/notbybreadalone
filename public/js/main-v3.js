@@ -334,6 +334,17 @@
 
   function loadSlotCounts() {
     if (!timeEl) return;
+    
+    // Map slot values to display windows (display only; values unchanged)
+    var slotDisplayMap = {
+      "6:00 AM": "6:00-6:10",
+      "7:00 AM": "7:00-7:10",
+      "8:15 AM": "8:00-8:10",
+      "12:00 PM": "12:00-12:10",
+      "6:00 PM": "6:00-6:10",
+      "9:00 PM": "9:00-9:10"
+    };
+    
     fetch("/slot-counts.php", { method: "GET", credentials: "same-origin" })
       .then(function (res) {
         if (!res.ok) return;
@@ -347,8 +358,8 @@
           var slot = option.value;
           if (counts.hasOwnProperty(slot)) {
             var count = counts[slot] || 0;
-            var baseText = slot;
-            option.textContent = baseText + " (" + count + ")";
+            var displayWindow = slotDisplayMap[slot] || slot;
+            option.textContent = displayWindow + " (" + count + " others)";
           }
         }
       })

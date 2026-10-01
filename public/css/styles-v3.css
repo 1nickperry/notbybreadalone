@@ -279,7 +279,7 @@ a:hover {
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 1rem 1.25rem;
   margin: 0 auto 1.35rem;
-  max-width: 24rem;
+  max-width: 28rem;
   text-align: left;
 }
 
@@ -1352,7 +1352,7 @@ a:hover {
   }
 
   .selectors {
-    max-width: 22rem;
+    max-width: 26rem;
     margin-left: auto;
     margin-right: auto;
     text-align: left;
@@ -1550,14 +1550,14 @@ a:hover {
 
 .signup-form .phone-row {
   width: 100%;
-  max-width: 24rem;
+  max-width: 28rem;
   margin-left: auto;
   margin-right: auto;
 }
 
 @media (max-width: 900px) {
   .signup-form .phone-row {
-    max-width: 22rem;
+    max-width: 26rem;
     margin-left: auto;
     margin-right: auto;
   }
