@@ -332,6 +332,33 @@
   var versionEl = document.getElementById("version");
   var timeEl = document.getElementById("time");
 
+  function loadSlotCounts() {
+    if (!timeEl) return;
+    fetch("/slot-counts.php", { method: "GET", credentials: "same-origin" })
+      .then(function (res) {
+        if (!res.ok) return;
+        return res.json();
+      })
+      .then(function (counts) {
+        if (!counts || typeof counts !== "object") return;
+        var options = timeEl.querySelectorAll("option");
+        for (var i = 0; i < options.length; i++) {
+          var option = options[i];
+          var slot = option.value;
+          if (counts.hasOwnProperty(slot)) {
+            var count = counts[slot] || 0;
+            var baseText = slot;
+            option.textContent = baseText + " (" + count + ")";
+          }
+        }
+      })
+      .catch(function () {
+        // Silently ignore fetch errors
+      });
+  }
+
+  loadSlotCounts();
+
   function setMessage(el, text, kind) {
     if (!el) return;
     el.textContent = text || "";

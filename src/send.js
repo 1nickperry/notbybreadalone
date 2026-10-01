@@ -8,11 +8,11 @@ const statePath = path.join(root, "data", "last-sent.json");
 const prefsPath = path.join(root, "data", "preferences.json");
 const logPath = path.join(root, "data", "log.txt");
 const TIME_ZONE = "America/Denver";
-const DEFAULT_SLOT = "8:00 AM";
+const DEFAULT_SLOT = "8:15 AM";
 const ALL_SLOTS = [
   "6:00 AM",
   "7:00 AM",
-  "8:00 AM",
+  "8:15 AM",
   "12:00 PM",
   "6:00 PM",
   "9:00 PM",
@@ -80,16 +80,14 @@ function slotToHour(slot) {
   return parsed ? parsed.hour : null;
 }
 
-function hourToSlot(hour) {
-  const map = {
-    6: "6:00 AM",
-    7: "7:00 AM",
-    8: "8:00 AM",
-    12: "12:00 PM",
-    18: "6:00 PM",
-    21: "9:00 PM",
-  };
-  return map[hour] || null;
+function findActiveSlot(hour, minute) {
+  for (const slot of ALL_SLOTS) {
+    const parsed = slotToHourMinute(slot);
+    if (parsed && parsed.hour === hour && parsed.minute === minute) {
+      return slot;
+    }
+  }
+  return null;
 }
 
 function isTestMode() {
@@ -123,11 +121,7 @@ function isSlotActive(slot, hour, minute) {
   const parsed = slotToHourMinute(slot);
   if (!parsed) return false;
   
-  if (isTestMode()) {
-    return parsed.hour === hour && parsed.minute === minute;
-  } else {
-    return parsed.hour === hour && parsed.minute === 0;
-  }
+  return parsed.hour === hour && parsed.minute === minute;
 }
 
 function readState() {
@@ -146,7 +140,15 @@ function writeState(state) {
 function readPreferences() {
   try {
     const prefs = JSON.parse(fs.readFileSync(prefsPath, "utf8"));
-    if (prefs && typeof prefs === "object" && !Array.isArray(prefs)) return prefs;
+    if (prefs && typeof prefs === "object" && !Array.isArray(prefs)) {
+      // Migrate old 8:00 AM to 8:15 AM
+      for (const phone in prefs) {
+        if (prefs[phone] && prefs[phone].time === "8:00 AM") {
+          prefs[phone].time = "8:15 AM";
+        }
+      }
+      return prefs;
+    }
   } catch {
     // ignore
   }
@@ -247,9 +249,9 @@ async function main() {
         return;
       }
     } else {
-      activeSlot = hourToSlot(hour);
+      activeSlot = findActiveSlot(hour, minute);
       if (!activeSlot) {
-        log(`No delivery slot at hour ${hour} ${TIME_ZONE}. Active slots: ${ALL_SLOTS.join(", ")}`);
+        log(`No delivery slot at hour ${hour}:${String(minute).padStart(2, "0")} ${TIME_ZONE}. Active slots: ${ALL_SLOTS.join(", ")}`);
         return;
       }
     }
@@ -271,8 +273,8 @@ async function main() {
     }
   }
 
-  if (!force && !dryRun && !slotArg && !testMode && !hourToSlot(hour)) {
-    log(`No delivery slot at hour ${hour} ${TIME_ZONE}. Active slots: ${ALL_SLOTS.join(", ")}`);
+  if (!force && !dryRun && !slotArg && !testMode && !findActiveSlot(hour, minute)) {
+    log(`No delivery slot at hour ${hour}:${String(minute).padStart(2, "0")} ${TIME_ZONE}. Active slots: ${ALL_SLOTS.join(", ")}`);
     return;
   }
 
