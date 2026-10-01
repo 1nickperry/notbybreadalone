@@ -19,7 +19,7 @@ function readJsonFile($file, $default) {
         return $default;
     }
     $decoded = json_decode(file_get_contents($file), true);
-    return is_array($decoded) ? $default : $decoded;
+    return is_array($decoded) ? $decoded : $default;
 }
 
 function migrateOldSlot($time) {
