@@ -110,9 +110,9 @@ npm run start          # runs schedule.js with setTimeout scheduling
 
 `src/schedule.js` and `src/send.js` now read `data/preferences.json` when present:
 
-- Default delivery remains **8:00 AM America/Denver** for numbers with no preference.
+- Default delivery remains **8:15 AM America/Denver** for numbers with no preference.
 - If a phone has `"time": "12:00 PM"` (etc.), they are only included when that Mountain Time slot is due.
-- **Production allowed slots:** 6:00 AM, 7:00 AM, 8:00 AM, 12:00 PM, 6:00 PM, 9:00 PM.
+- **Production allowed slots:** 6:00 AM, 7:00 AM, 8:15 AM, 12:00 PM, 6:00 PM, 9:00 PM.
 - `npm run now` / `node src/send.js --now` still texts **everyone** (ops override).
 - Theme / Bible version prefs are stored for future verse filtering. The current sender still picks from the shared `verses.json` pool until theme filtering is added.
 

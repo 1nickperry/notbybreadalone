@@ -99,13 +99,18 @@ $time = trim((string) requestValue(["time"]));
 $theme = trim((string) requestValue(["theme", "fulfillment"]));
 
 $allowedVersions = ["KJV", "NIV", "ESV", "NLT", "NKJV"];
-$allowedTimes = ["6:00 AM", "7:00 AM", "8:00 AM", "12:00 PM", "6:00 PM", "9:00 PM"];
+$allowedTimes = ["6:00 AM", "7:00 AM", "8:15 AM", "12:00 PM", "6:00 PM", "9:00 PM"];
 $allowedThemes = [
     "Faith", "Courage", "Love", "Peace",
     "Wisdom", "Knowledge", "Healing", "Miracles", "Prophecy", "Discernment",
     "Tongues", "Interpretation", "Interpretation of Tongues",
     "Joy", "Patience", "Kindness", "Goodness", "Faithfulness", "Gentleness", "Self-Control",
 ];
+
+// Migrate old 8:00 AM slot to 8:15 AM
+if ($time === "8:00 AM") {
+    $time = "8:15 AM";
+}
 
 // Marketing form currently only offers KJV; default and coerce unknowns to KJV.
 if ($version === "" || !in_array($version, $allowedVersions, true)) {
