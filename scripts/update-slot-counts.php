@@ -1,0 +1,63 @@
+#!/usr/bin/env php
+<?php
+/**
+ * Regenerate slot-counts.json cache from preferences.json
+ * 
+ * Run via cron:
+ *   0 0 * * * cd /home/u593240408/morning-bible-verse && php scripts/update-slot-counts.php >> data/cron-slot-counts.log 2>&1
+ * 
+ * Or manually:
+ *   php scripts/update-slot-counts.php
+ */
+
+function projectDataDir() {
+    $hostinger = "/home/u593240408/morning-bible-verse/data";
+    if (is_dir($hostinger)) {
+        return $hostinger;
+    }
+    $local = dirname(__DIR__) . "/data";
+    if (!is_dir($local)) {
+        @mkdir($local, 0755, true);
+    }
+    return $local;
+}
+
+function readJsonFile($file, $default) {
+    if (!is_file($file)) {
+        return $default;
+    }
+    $decoded = json_decode(file_get_contents($file), true);
+    return is_array($decoded) ? $decoded : $default;
+}
+
+function migrateOldSlot($time) {
+    return $time === "8:00 AM" ? "8:15 AM" : $time;
+}
+
+$dataDir = projectDataDir();
+$prefsFile = $dataDir . "/preferences.json";
+$cacheFile = $dataDir . "/slot-counts.json";
+
+$allowedTimes = ["6:00 AM", "7:00 AM", "8:15 AM", "12:00 PM", "6:00 PM", "9:00 PM"];
+
+$prefs = readJsonFile($prefsFile, []);
+if (!is_array($prefs)) {
+    $prefs = [];
+}
+
+$counts = array_fill_keys($allowedTimes, 0);
+
+foreach ($prefs as $phone => $entry) {
+    if (!is_array($entry) || !isset($entry["time"])) {
+        continue;
+    }
+    $time = migrateOldSlot($entry["time"]);
+    if (in_array($time, $allowedTimes, true)) {
+        $counts[$time] += 1;
+    }
+}
+
+$output = json_encode($counts, JSON_PRETTY_PRINT);
+file_put_contents($cacheFile, $output . "\n", LOCK_EX);
+
+echo "[" . gmdate("Y-m-d H:i:s") . "] Slot counts cache updated: " . json_encode($counts) . "\n";
