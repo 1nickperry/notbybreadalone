@@ -11,11 +11,9 @@ const TIME_ZONE = "America/Denver";
 const DEFAULT_SLOT = "8:15 AM";
 const ALL_SLOTS = [
   "6:00 AM",
-  "7:00 AM",
   "8:15 AM",
   "12:00 PM",
   "6:00 PM",
-  "9:00 PM",
 ];
 
 function loadEnv() {
