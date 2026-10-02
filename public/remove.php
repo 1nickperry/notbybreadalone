@@ -36,6 +36,32 @@ function writeJsonFile($file, $data) {
     );
 }
 
+function refreshSlotCountsCache($dataDir) {
+    // Refresh slot-counts.json after preference changes so counts stay fresh
+    $prefsFile = $dataDir . "/preferences.json";
+    $cacheFile = $dataDir . "/slot-counts.json";
+    $allowedTimes = ["6:00 AM", "7:00 AM", "8:15 AM", "12:00 PM", "6:00 PM", "9:00 PM"];
+    
+    $prefs = readJsonFile($prefsFile, []);
+    if (!is_array($prefs)) {
+        $prefs = [];
+    }
+    
+    $counts = array_fill_keys($allowedTimes, 0);
+    
+    foreach ($prefs as $phone => $entry) {
+        if (!is_array($entry) || !isset($entry["time"])) {
+            continue;
+        }
+        $time = ($entry["time"] === "8:00 AM") ? "8:15 AM" : $entry["time"];
+        if (in_array($time, $allowedTimes, true)) {
+            $counts[$time] += 1;
+        }
+    }
+    
+    file_put_contents($cacheFile, json_encode($counts, JSON_PRETTY_PRINT) . "\n", LOCK_EX);
+}
+
 function loadEnvFile($envFile) {
     $env = [];
     if (!is_file($envFile)) {
@@ -137,6 +163,9 @@ if ($wasOnList) {
         unset($prefs[$phone]);
         writeJsonFile($prefsFile, $prefs);
     }
+    
+    // Refresh slot counts cache so frontend loads updated counts quickly
+    refreshSlotCountsCache($dataDir);
 }
 
 // Record reason separately when provided (page flow). Does not change numbers.json shape.
