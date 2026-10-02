@@ -71,40 +71,51 @@ After first deploy with the new signup form, `data/preferences.json` is created 
 
 Confirm `mod_rewrite` (or LiteSpeed equivalent) is on. If pretty routes 404, keep calling `/add.php?=…` as a fallback.
 
-## Node sender (cron recommended)
+## Node sender (cron every minute required)
 
-### Production: Cron every minute (recommended)
+Exact-minute slots (especially **8:15 AM** America/Denver) only fire when `src/send.js` runs during that Mountain Time minute. Hourly cron or a dead worker means Nick has to bounce the TextLink queue / run send by hand.
 
-Hostinger shared hosting cron setup (via hPanel → Advanced → Cron Jobs):
+### Production: Cron every minute (required)
+
+Hostinger shared hosting cron (hPanel → Advanced → Cron Jobs). Prefer the Hostinger Node binary used on this account:
+
+```bash
+* * * * * cd /home/u593240408/morning-bible-verse && /opt/alt/alt-nodejs22/root/usr/bin/node src/send.js >> data/cron-send.log 2>&1
+```
+
+Fallback if that path is missing on the plan:
 
 ```bash
 * * * * * cd /home/u593240408/morning-bible-verse && /usr/bin/node src/send.js >> data/cron-send.log 2>&1
 ```
 
-**Why cron-every-minute wins:**
-- Survives PHP/Node process restarts automatically
-- No need to keep a long-running process alive
-- `send.js` is idempotent: checks Denver hour/minute against active slots
-- Only sends when the current minute matches a slot time (e.g., 8:00, 12:00)
-- Skips silently at all other minutes with clear logging
+Confirm in `.env`:
+- `TEXTLINK_API_KEY` set
+- `SIM_CARD_ID=3887` (Nick S22 / TextLink device 3076 P43S, sender +19704243281)
+- `DV_TEST_MODE` unset in production
+
+**Why every minute is required:**
+- `findActiveSlot(hour, minute)` matches the preference minute exactly (8:15, 12:00, etc.)
+- Idempotent via `data/last-sent.json` slot keys (no double-send for the same slot/day)
+- One automatic retry for failed recipients in the same run; successes are not resent
+- TextLink may report `queued` and fan out over a few seconds; keep the TextLink app online on the S22 so the queue drains without a manual bounce
 
 **Logs:**
-- View `data/cron-send.log` for all cron runs
-- View `data/log.txt` for successful sends and errors
+- `data/cron-send.log` for every cron tick
+- `data/log.txt` for sends, retries, and errors
 
-### Alternative: Long-running schedule.js
+### Alternative: long-running minute poller
 
-If you prefer a persistent process (e.g., on a VPS):
+`scripts/dv-minute-poller.sh` loops `node src/send.js` about every 55s (no `DV_TEST_MODE`). Only use if cron cannot run every minute; Hostinger shared hosting may kill long processes.
+
+### Alternative: schedule.js
 
 ```bash
 cd /home/u593240408/morning-bible-verse
-npm run start          # runs schedule.js with setTimeout scheduling
+npm run start          # setTimeout scheduling
 ```
 
-**Caveats:**
-- Must stay running 24/7 (use systemd, PM2, or screen)
-- Hostinger shared hosting may kill idle processes
-- Fragile to process crashes; prefer cron for reliability
+Fragile on shared hosting; prefer cron every minute.
 
 ### Per-user send times
 

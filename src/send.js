@@ -215,7 +215,7 @@ async function main() {
   const slotArg = argValue("--slot");
 
   const apiKey = process.env.TEXTLINK_API_KEY;
-  const simCardId = Number(process.env.SIM_CARD_ID || "2366");
+  const simCardId = Number(process.env.SIM_CARD_ID || "3887");
   const phones = readNumbers();
   if (phones.length === 0 && process.env.RECIPIENT_PHONE) {
     phones.push(process.env.RECIPIENT_PHONE.trim());
@@ -343,20 +343,48 @@ async function main() {
     return;
   }
 
-  let failed = 0;
-  for (const phone of recipients) {
+  const modeTag = testMode ? " [TEST]" : "";
+  const failedPhones = [];
+  let sentCount = 0;
+
+  async function deliverOne(phone, attempt) {
     const result = await sendSms({ apiKey, phone, text, simCardId });
     if (!result.ok) {
-      failed += 1;
-      log(`Failed to text ${verse.reference} to ${phone}: ${result.message || "unknown error"}`);
-      continue;
+      const attemptLabel = attempt > 1 ? " (retry)" : "";
+      log(
+        `Failed to text ${verse.reference} to ${phone}${attemptLabel}: ${result.message || "unknown error"}`
+      );
+      return false;
     }
     const status = result.queued ? "queued" : "sent";
-    const modeTag = testMode ? " [TEST]" : "";
-    log(`${status} ${verse.reference} to ${phone} via sim_card_id ${simCardId} (${activeSlot}${modeTag})`);
+    const attemptLabel = attempt > 1 ? " retry" : "";
+    log(
+      `${status} ${verse.reference} to ${phone} via sim_card_id ${simCardId} (${activeSlot}${modeTag}${attemptLabel})`
+    );
+    return true;
   }
 
-  if (failed === recipients.length) {
+  // Burst the whole slot cohort; TextLink may fan out over a few seconds.
+  for (const phone of recipients) {
+    const ok = await deliverOne(phone, 1);
+    if (ok) sentCount += 1;
+    else failedPhones.push(phone);
+  }
+
+  // One retry for failures only (no double-send to successes).
+  if (failedPhones.length > 0) {
+    log(`Retrying ${failedPhones.length} failed recipient(s) once for slot ${activeSlot}.`);
+    const stillFailed = [];
+    for (const phone of failedPhones) {
+      const ok = await deliverOne(phone, 2);
+      if (ok) sentCount += 1;
+      else stillFailed.push(phone);
+    }
+    failedPhones.length = 0;
+    failedPhones.push(...stillFailed);
+  }
+
+  if (sentCount === 0) {
     process.exitCode = 1;
     return;
   }
@@ -366,10 +394,18 @@ async function main() {
     date: today,
     reference: verse.reference,
     sentAt: new Date().toISOString(),
-    count: recipients.length - failed,
+    count: sentCount,
     slot: activeSlot,
     slots: nextSlots,
+    failedCount: failedPhones.length,
   });
+
+  if (failedPhones.length > 0) {
+    log(
+      `Slot ${activeSlot} partial: ${sentCount} sent, ${failedPhones.length} still failed after retry.`
+    );
+    process.exitCode = 1;
+  }
 }
 
 main().catch((error) => {
