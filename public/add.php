@@ -41,7 +41,7 @@ function refreshSlotCountsCache($dataDir) {
     // Refresh slot-counts.json after preference changes so counts stay fresh
     $prefsFile = $dataDir . "/preferences.json";
     $cacheFile = $dataDir . "/slot-counts.json";
-    $allowedTimes = ["6:00 AM", "7:00 AM", "8:15 AM", "12:00 PM", "6:00 PM", "9:00 PM"];
+    $allowedTimes = ["6:00 AM", "7:00 AM", "8:00 AM", "12:00 PM", "6:00 PM", "9:00 PM"];
     
     $prefs = readJsonFile($prefsFile, []);
     if (!is_array($prefs)) {
@@ -54,7 +54,7 @@ function refreshSlotCountsCache($dataDir) {
         if (!is_array($entry) || !isset($entry["time"])) {
             continue;
         }
-        $time = ($entry["time"] === "8:00 AM") ? "8:15 AM" : $entry["time"];
+        $time = ($entry["time"] === "8:15 AM") ? "8:00 AM" : $entry["time"];
         if (in_array($time, $allowedTimes, true)) {
             $counts[$time] += 1;
         }
@@ -125,7 +125,7 @@ $time = trim((string) requestValue(["time"]));
 $theme = trim((string) requestValue(["theme", "fulfillment"]));
 
 $allowedVersions = ["KJV", "NIV", "ESV", "NLT", "NKJV"];
-$allowedTimes = ["6:00 AM", "7:00 AM", "8:15 AM", "12:00 PM", "6:00 PM", "9:00 PM"];
+$allowedTimes = ["6:00 AM", "7:00 AM", "8:00 AM", "12:00 PM", "6:00 PM", "9:00 PM"];
 $allowedThemes = [
     "Faith", "Courage", "Love", "Peace",
     "Wisdom", "Knowledge", "Healing", "Miracles", "Prophecy", "Discernment",
@@ -133,9 +133,9 @@ $allowedThemes = [
     "Joy", "Patience", "Kindness", "Goodness", "Faithfulness", "Gentleness", "Self-Control",
 ];
 
-// Migrate old 8:00 AM slot to 8:15 AM
-if ($time === "8:00 AM") {
-    $time = "8:15 AM";
+// Migrate old 8:15 AM slot to 8:00 AM
+if ($time === "8:15 AM") {
+    $time = "8:00 AM";
 }
 
 // Marketing form currently only offers KJV; default and coerce unknowns to KJV.

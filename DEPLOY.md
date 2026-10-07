@@ -4,6 +4,22 @@ Account: `u593240408`
 App path on server: `/home/u593240408/morning-bible-verse/`  
 Public domain: `https://notbybreadalone.app`
 
+## IMPORTANT: 8:15 AM → 8:00 AM slot migration
+
+After deploying the updated code, run the one-time migration to move existing 8:15 AM subscribers to 8:00 AM:
+
+```bash
+cd /home/u593240408/morning-bible-verse
+php scripts/migrate-815-to-800.php
+```
+
+This will:
+- Rewrite all preferences with `"time": "8:15 AM"` to `"time": "8:00 AM"`
+- Create a timestamped backup of preferences.json
+- Refresh the slot-counts.json cache
+
+Safe to run multiple times (idempotent). Test first with `--dry-run` flag.
+
 ## Document root
 
 Point the site document root at the **`public/`** folder so `/` serves `index.html` and `/add` `/remove` still hit PHP:
@@ -78,7 +94,7 @@ Confirm `mod_rewrite` (or LiteSpeed equivalent) is on. If pretty routes 404, kee
 
 ### 1. Node sender (every minute, required)
 
-Exact-minute slots (especially **8:15 AM** America/Denver) only fire when `src/send.js` runs during that Mountain Time minute. Hourly cron or a dead worker means Nick has to bounce the TextLink queue / run send by hand.
+Exact-minute slots (especially **8:00 AM** America/Denver) only fire when `src/send.js` runs during that Mountain Time minute. Hourly cron or a dead worker means Nick has to bounce the TextLink queue / run send by hand.
 
 Hostinger shared hosting cron (hPanel → Advanced → Cron Jobs). Prefer the Hostinger Node binary used on this account:
 
@@ -110,7 +126,7 @@ Confirm in `.env`:
 - `DV_TEST_MODE` unset in production
 
 **Why every minute is required:**
-- `findActiveSlot(hour, minute)` matches the preference minute exactly (8:15, 12:00, etc.)
+- `findActiveSlot(hour, minute)` matches the preference minute exactly (8:00, 12:00, etc.)
 - Idempotent via `data/last-sent.json` slot keys (no double-send for the same slot/day)
 - One automatic retry for failed recipients in the same run; successes are not resent
 - TextLink may report `queued` and fan out over a few seconds; keep the TextLink app online on the S22 so the queue drains without a manual bounce
@@ -136,9 +152,9 @@ Fragile on shared hosting; prefer cron every minute.
 
 `src/schedule.js` and `src/send.js` now read `data/preferences.json` when present:
 
-- Default delivery remains **8:15 AM America/Denver** for numbers with no preference.
+- Default delivery remains **8:00 AM America/Denver** for numbers with no preference.
 - If a phone has `"time": "12:00 PM"` (etc.), they are only included when that Mountain Time slot is due.
-- **Production allowed slots:** 6:00 AM, 7:00 AM, 8:15 AM, 12:00 PM, 6:00 PM, 9:00 PM.
+- **Production allowed slots:** 6:00 AM, 7:00 AM, 8:00 AM, 12:00 PM, 6:00 PM, 9:00 PM.
 - `npm run now` / `node src/send.js --now` still texts **everyone** (ops override).
 - Theme / Bible version prefs are stored for future verse filtering. The current sender still picks from the shared `verses.json` pool until theme filtering is added.
 
