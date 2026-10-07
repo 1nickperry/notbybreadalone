@@ -1,7 +1,7 @@
 {
   "name": "morning-bible-verse",
   "private": true,
-  "description": "Text a random popular Bible verse every morning at 8:15 AM Mountain Time.",
+  "description": "Text a random popular Bible verse every morning at 8:00 AM Mountain Time.",
   "scripts": {
     "build": "node src/build-verses.js",
     "dry-run": "node src/send.js --dry-run",

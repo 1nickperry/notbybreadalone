@@ -31,14 +31,14 @@ function readJsonFile($file, $default) {
 }
 
 function migrateOldSlot($time) {
-    return $time === "8:00 AM" ? "8:15 AM" : $time;
+    return $time === "8:15 AM" ? "8:00 AM" : $time;
 }
 
 $dataDir = projectDataDir();
 $prefsFile = $dataDir . "/preferences.json";
 $cacheFile = $dataDir . "/slot-counts.json";
 
-$allowedTimes = ["6:00 AM", "7:00 AM", "8:15 AM", "12:00 PM", "6:00 PM", "9:00 PM"];
+$allowedTimes = ["6:00 AM", "7:00 AM", "8:00 AM", "12:00 PM", "6:00 PM", "9:00 PM"];
 
 $prefs = readJsonFile($prefsFile, []);
 if (!is_array($prefs)) {

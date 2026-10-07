@@ -8,11 +8,11 @@ const statePath = path.join(root, "data", "last-sent.json");
 const prefsPath = path.join(root, "data", "preferences.json");
 const logPath = path.join(root, "data", "log.txt");
 const TIME_ZONE = "America/Denver";
-const DEFAULT_SLOT = "8:15 AM";
+const DEFAULT_SLOT = "8:00 AM";
 const ALL_SLOTS = [
   "6:00 AM",
   "7:00 AM",
-  "8:15 AM",
+  "8:00 AM",
   "12:00 PM",
   "6:00 PM",
   "9:00 PM",
@@ -141,10 +141,10 @@ function readPreferences() {
   try {
     const prefs = JSON.parse(fs.readFileSync(prefsPath, "utf8"));
     if (prefs && typeof prefs === "object" && !Array.isArray(prefs)) {
-      // Migrate old 8:00 AM to 8:15 AM
+      // Migrate old 8:15 AM to 8:00 AM
       for (const phone in prefs) {
-        if (prefs[phone] && prefs[phone].time === "8:00 AM") {
-          prefs[phone].time = "8:15 AM";
+        if (prefs[phone] && prefs[phone].time === "8:15 AM") {
+          prefs[phone].time = "8:00 AM";
         }
       }
       return prefs;
