@@ -1623,6 +1623,8 @@ a:hover {
     width: 18px;
     height: 18px;
     flex-shrink: 0;
+    overflow: visible;
+    vertical-align: middle;
   }
   
   .donate-fab {
