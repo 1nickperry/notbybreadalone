@@ -1587,6 +1587,40 @@ a:hover {
 /* fulfillment fully removed from UI */
 .selector-fulfillment, [data-fulfillment], #theme, #fulfillment { display: none !important; }
 
+/* Donate icons (mobile only) */
+.donate-icons-mobile {
+  display: none;
+}
+
+@media (max-width: 900px) {
+  .donate-icons-mobile {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    margin-left: 0.45rem;
+  }
+  
+  .donate-icon-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--lime);
+    transition: opacity 0.15s ease;
+    text-decoration: none;
+  }
+  
+  .donate-icon-link:hover {
+    opacity: 0.8;
+    text-decoration: none;
+  }
+  
+  .donate-icon {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+  }
+}
+
 /* Donate FAB: bottom-right, white fill + key-lime outline/text (match Sign Up --lime) */
 #donateFab.donate-fab,
 .donate-fab {

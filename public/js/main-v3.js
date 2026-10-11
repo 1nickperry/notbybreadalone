@@ -2,7 +2,7 @@
   "use strict";
 
   // Swap these constants (and matching data-* on #donateFab) when handles arrive.
-  var VENMO_HANDLE = "VENMO_HANDLE";
+  var VENMO_HANDLE = "theshopifypro";
   var PAYPAL_HANDLE = "perrynick";
 
   var yearEl = document.getElementById("year");
@@ -258,7 +258,7 @@
       (donateFab && donateFab.getAttribute("data-paypal-handle")) || PAYPAL_HANDLE;
     if (donateVenmo) {
       if (!isDonatePlaceholder(venmo)) {
-        donateVenmo.href = "https://venmo.com/u/" + encodeURIComponent(venmo);
+        donateVenmo.href = "https://account.venmo.com/u/" + encodeURIComponent(venmo);
         donateVenmo.hidden = false;
       } else {
         donateVenmo.hidden = true;
