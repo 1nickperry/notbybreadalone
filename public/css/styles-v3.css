@@ -1597,7 +1597,11 @@ a:hover {
     display: inline-flex;
     align-items: center;
     gap: 0.25rem;
-    margin-left: 0.4rem;
+    position: absolute;
+    right: 100%;
+    bottom: 0;
+    height: 2.85rem;
+    margin-right: 0.35rem;
   }
   
   .donate-icon-link {
@@ -1627,10 +1631,6 @@ a:hover {
     vertical-align: middle;
   }
   
-  .donate-fab {
-    flex-direction: row !important;
-    align-items: center !important;
-  }
 }
 
 /* Donate FAB: bottom-right, white fill + key-lime outline/text (match Sign Up --lime) */
