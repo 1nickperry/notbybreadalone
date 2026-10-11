@@ -1598,10 +1598,9 @@ a:hover {
     align-items: center;
     gap: 0.25rem;
     position: absolute;
-    right: 100%;
+    right: 6rem;
     bottom: 0;
     height: 2.85rem;
-    margin-right: 0.35rem;
   }
   
   .donate-icon-link {
