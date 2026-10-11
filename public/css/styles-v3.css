@@ -274,6 +274,45 @@ a:hover {
   color: var(--ink);
 }
 
+.verse-context {
+  max-width: 32rem;
+  margin: 0 auto 1.75rem;
+  padding: 1.25rem 1.5rem;
+  background: rgba(29, 74, 97, 0.03);
+  border-left: 3px solid var(--ink);
+  border-radius: 8px;
+}
+
+.verse-quote {
+  margin: 0 0 0.85rem;
+  font-style: normal;
+}
+
+.verse-quote p {
+  margin: 0 0 0.5rem;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: var(--ink);
+  font-weight: 500;
+}
+
+.verse-quote cite {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--ink);
+  opacity: 0.75;
+  font-style: normal;
+}
+
+.verse-explanation {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.45;
+  color: var(--ink);
+  font-weight: 500;
+}
+
 .selectors {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
