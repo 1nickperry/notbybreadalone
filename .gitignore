@@ -13,3 +13,4 @@ Thumbs.db
 .vscode/
 .idea/
 sheets-webhook.url
+data/opted-out.json

@@ -1,6 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 const { readNumbers } = require("./numbers");
+const optOut = require("./opt-out");
 
 const root = path.join(__dirname, "..");
 const versesPath = path.join(root, "data", "verses.json");
@@ -234,6 +235,12 @@ async function main() {
   const verses = JSON.parse(fs.readFileSync(versesPath, "utf8"));
   const state = readState();
   const prefs = readPreferences();
+  const optOuts = optOut.readOptOuts();
+
+  // Deliver any pending opt-out alerts (one per number, retried hourly on failure).
+  if (!dryRun && (await optOut.flushAlerts({ optOuts, log }))) {
+    optOut.writeOptOuts(optOuts);
+  }
   const today = denverDate();
   const parts = denverParts();
   const hour = Number(parts.hour);
@@ -301,6 +308,18 @@ async function main() {
     });
   }
 
+  // Skip numbers TextLink has refused as opted out (no daily retries).
+  const resubAttempts = new Set();
+  recipients = recipients.filter((phone) => {
+    const decision = optOut.shouldSkip(phone, optOuts, prefs);
+    if (decision.reason === "resubscribed") {
+      resubAttempts.add(phone);
+      if (!dryRun) log(`${phone} re-signed up after opting out; trying it once this slot.`);
+    }
+    if (decision.skip && !dryRun) log(`Skipping ${phone} for ${activeSlot}: opted out in TextLink.`);
+    return !decision.skip;
+  });
+
   if (recipients.length === 0) {
     if (testMode) {
       log(`No recipients for slot ${activeSlot} (test mode: 5-min boundaries).`);
@@ -346,6 +365,7 @@ async function main() {
   const modeTag = testMode ? " [TEST]" : "";
   const failedPhones = [];
   let sentCount = 0;
+  let optOutsChanged = false;
 
   async function deliverOne(phone, attempt) {
     const result = await sendSms({ apiKey, phone, text, simCardId });
@@ -354,7 +374,17 @@ async function main() {
       log(
         `Failed to text ${verse.reference} to ${phone}${attemptLabel}: ${result.message || "unknown error"}`
       );
+      if (optOut.isOptOutMessage(result.message)) {
+        const { isNew } = optOut.markOptedOut(optOuts, phone, result.message);
+        optOutsChanged = true;
+        log(`Marked ${phone} opted out${isNew ? " (new, alert queued)" : " (already known, no alert)"}; it will be skipped.`);
+        return "opted-out";
+      }
       return false;
+    }
+    if (optOut.clearOptOut(optOuts, phone)) {
+      optOutsChanged = true;
+      log(`Cleared opt-out for ${phone}: send succeeded.`);
     }
     const status = result.queued ? "queued" : "sent";
     const attemptLabel = attempt > 1 ? " retry" : "";
@@ -367,8 +397,9 @@ async function main() {
   // Burst the whole slot cohort; TextLink may fan out over a few seconds.
   for (const phone of recipients) {
     const ok = await deliverOne(phone, 1);
-    if (ok) sentCount += 1;
-    else failedPhones.push(phone);
+    if (ok === true) sentCount += 1;
+    else if (ok === false) failedPhones.push(phone);
+    // "opted-out": never retried within the slot
   }
 
   // One retry for failures only (no double-send to successes).
@@ -377,11 +408,16 @@ async function main() {
     const stillFailed = [];
     for (const phone of failedPhones) {
       const ok = await deliverOne(phone, 2);
-      if (ok) sentCount += 1;
-      else stillFailed.push(phone);
+      if (ok === true) sentCount += 1;
+      else if (ok === false) stillFailed.push(phone);
     }
     failedPhones.length = 0;
     failedPhones.push(...stillFailed);
+  }
+
+  if (optOutsChanged) {
+    optOut.writeOptOuts(optOuts);
+    if (await optOut.flushAlerts({ optOuts, log })) optOut.writeOptOuts(optOuts);
   }
 
   if (sentCount === 0) {
